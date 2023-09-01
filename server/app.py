@@ -33,7 +33,6 @@ api=Api(app)
 @app.route('/')
 def home():
     return 'HELLO WORLD'
-
 class Users(Resource):
     def get(self):
         users = User.query.all()
@@ -47,7 +46,6 @@ class Cars(Resource):
         cars_ser =[car.to_dict() for car in cars]
         return make_response(cars_ser, 200)
 api.add_resource(Cars, '/cars')
-
 class Register(Resource):
     def post(self):
         data = request.get_json()
@@ -62,7 +60,6 @@ class Register(Resource):
             new_error = make_response({'error': str(error)}, 200)
             return new_error
 api.add_resource(Register, '/register')
-
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -94,27 +91,18 @@ class Appointments(Resource):
             date = data['date'],
             time = data['time'],
             payment = data['payment'],
-            type_of_service=data['type_of_service'],
-            
+            type_of_service=data['type_of_service'], 
         )
-    # date = db.Column(db.String)
-    # time = db.Column(db.Integer)
-    # payment = db.Column(db.Integer)
-    # type_of_service = db.Column(db.String)
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # car_id = db.Column(db.Integer, db.ForeignKey('cars.id'))
 api.add_resource(Appointments, '/appointments')
 
 class GetCurrent(Resource):
     def get(self):
         user_id = session.get('user_id')
         if not user_id:
-            return make_response({'error': "User not authenticated"}, 400)
-        
+            return make_response({'error': "User not authenticated"}, 400)       
         user = User.query.get(user_id)
         if not user:
-            return make_response({'errors':'User not found'}, 400)
-        
+            return make_response({'errors':'User not found'}, 400)        
         user_dict = user.to_dict()
         return make_response(user_dict, 200)
     def patch(self):
@@ -141,17 +129,12 @@ api.add_resource(Signup, '/signup')
 # LOGOUT OPTIONAL
 class Logout(Resource):
     
-    def delete(self):
-        
-        if session.get('user_id'):
-            
-            session['user_id'] = None
-            
-            return {}, 204
-        
+    def delete(self):        
+        if session.get('user_id'):            
+            session['user_id'] = None            
+            return {}, 204       
         return {'error': '401 Unauthorized'}, 401
 api.add_resource(Logout, '/logout')
-
 class MakeAppointmentLoggedIn(Resource):
     def post(self):
         user_id = session.get('user_id')

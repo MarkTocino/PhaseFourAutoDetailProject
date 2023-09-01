@@ -12,4 +12,4 @@ pip install flask_sqlalchemy
 pip install flask-session
 pip install cors
 pip install flask_cors
-pip install formik --save
+npm install formik --save

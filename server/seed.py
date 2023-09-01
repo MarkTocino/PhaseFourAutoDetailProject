@@ -9,8 +9,8 @@ if __name__ == '__main__':
         Appointment.query.delete()
 
         print("Seeding users...")
-        sam = User(first_name="Sam", last_name="Ou", phone_number=119, email="Sam@hotmail.com", password ='YoungKing')
-        mark = User(first_name="Mark", last_name="Tocino", phone_number=911, email="Mark@gmail.com", password ='King')
+        sam = User(first_name="Sam", last_name="Ou", phone_number=17187363560, email="Sam@hotmail.com", password ='YoungKing')
+        mark = User(first_name="Mark", last_name="Tocino", phone_number=5163002931, email="Mark@gmail.com", password ='King')
         users=[sam,mark]
         db.session.add_all(users)
         db.session.commit()
