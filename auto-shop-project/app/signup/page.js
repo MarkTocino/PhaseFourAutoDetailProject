@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import * as yup from 'yup'
 export const signup = () => {
   const router = useRouter();
-  const [user, SetUser] = useState('');
+  const [user, setUser] = useState('');
   const onSubmit = () => {
-    fetch("http://127.0.0.1:5555/signup", {
+    fetch("http://127.0.0.1:5555/register", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -23,7 +23,7 @@ export const signup = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        SetUser(json);
+        setUser(json);
         router.push("/login");
   })};
   const basicSchema = yup.object().shape({

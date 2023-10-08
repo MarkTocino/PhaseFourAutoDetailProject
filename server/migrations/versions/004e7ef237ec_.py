@@ -1,8 +1,8 @@
-"""Create Tables
+"""empty message
 
-Revision ID: 1a8316ed131f
+Revision ID: 004e7ef237ec
 Revises: 
-Create Date: 2023-08-26 13:20:17.630311
+Create Date: 2023-10-08 18:06:20.847325
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1a8316ed131f'
+revision = '004e7ef237ec'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,34 +22,35 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=True),
     sa.Column('last_name', sa.String(), nullable=True),
-    sa.Column('phone_number', sa.Integer(), nullable=True),
+    sa.Column('phone_number', sa.String(), nullable=True),
     sa.Column('email', sa.String(), nullable=True),
-    sa.Column('password', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
-    sa.UniqueConstraint('email', name=op.f('uq_users_email')),
-    sa.UniqueConstraint('phone_number', name=op.f('uq_users_phone_number'))
+    sa.Column('password', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('phone_number')
     )
     op.create_table('cars',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('make', sa.String(), nullable=True),
     sa.Column('model', sa.String(), nullable=True),
-    sa.Column('year', sa.Integer(), nullable=True),
+    sa.Column('year', sa.String(), nullable=True),
     sa.Column('engine', sa.String(), nullable=True),
+    sa.Column('plate_number', sa.String(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_cars_user_id_users')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_cars'))
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('plate_number')
     )
     op.create_table('appointments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('date', sa.String(), nullable=True),
-    sa.Column('time', sa.Integer(), nullable=True),
-    sa.Column('payment', sa.Integer(), nullable=True),
+    sa.Column('time', sa.String(), nullable=True),
     sa.Column('type_of_service', sa.String(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('car_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['car_id'], ['cars.id'], name=op.f('fk_appointments_car_id_cars')),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_appointments_user_id_users')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_appointments'))
+    sa.ForeignKeyConstraint(['car_id'], ['cars.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 
