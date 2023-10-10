@@ -30,7 +30,7 @@ export default function login() {
       const data = await response.json()
         if (data.ok)
         return setUser(data)
-      router.push('/dashboard')
+      window.location.href = '/account'
     }
   }
 return (

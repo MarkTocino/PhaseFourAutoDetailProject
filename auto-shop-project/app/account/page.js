@@ -46,7 +46,7 @@ const { user } = useContext(UserContext)
               </div>
             </div>
           ) : (
-            <div>Still fixing</div>
+            <div>LOADING...</div>
           )}
         </div>
     </div>
