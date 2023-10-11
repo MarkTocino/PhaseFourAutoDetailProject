@@ -1,10 +1,11 @@
 from models import db, User, Car, Appointment
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
-from flask import Flask, make_response, jsonify, request, render_template, redirect, session
+from flask import Flask, make_response, jsonify, request, session
 from flask_cors import CORS as FlaskCors
-from flask_session import Session
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
+import bcrypt
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get(
@@ -14,21 +15,28 @@ DATABASE = os.environ.get(
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
-app.config["SESSION_PERMANENT"] = False
+# app.json.compact = False
+# app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
-app.config["SESSION_COOKIE_PATH"] = "/"
-
-
-Session(app)
-cors = FlaskCors(app, origins=["http://localhost:3000"], supports_credentials=True)
-
+app.config['SECRET_KEY'] = 'c24bb3864c2d48f9883f5fb9'
 migrate = Migrate(app, db)
-
 db.init_app(app)
 api=Api(app)
+
+
+cors = FlaskCors(app, origins=["http://localhost:3000"], supports_credentials=True)
+
+
+# Login Things :)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 @app.route('/')
 def home():
@@ -46,68 +54,62 @@ class Cars(Resource):
         cars_ser =[car.to_dict() for car in cars]
         return make_response(cars_ser, 200)
 api.add_resource(Cars, '/cars')
+
+# Register
 class Register(Resource):
     def post(self):
         data = request.get_json()
-        user = User()
+        password = data['password']
+        first_name = data['first_name']
+        last_name=data['last_name']
+        email = data['email']
+        phone_number=data['phone_number']
+        hashed=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return make_response("Username has already been used"), 400
         try:
-            for attr in data:
-                setattr(user, attr, data[attr])
+            user = User( email=email,password=hashed, first_name=first_name, last_name=last_name, phone_number=phone_number)
             db.session.add(user)
             db.session.commit()
-            return make_response(user.to_dict(), 200)
-        except ValueError as error:
-            new_error = make_response({'error': str(error)}, 200)
-            return new_error
+            return make_response("User has been created", 200)
+        except:
+            return make_response("Failed to Create User"), 404
 api.add_resource(Register, '/register')
+
+
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        email = data["email"]
-        password = data["password"]
-
-        user = User.query.filter(User.email == email).first()
+        user = User.query.filter(User.email == data['email']).first()
         if not user:
-            return make_response({'error':'No user found with email'}, 401)
-        if user.email != email:
-            return make_response({"error":"Invalid email or password"}, 400)
-        if user.password != password:
-            return make_response({"error":"Invalid email or password"}, 400)
-        if user.password == password and user.email == email:
-            session['user_id'] = user.id,
-            session['user_name'] = user.first_name
-            return make_response(user.to_dict(),200)
-        
+           return make_response({"error":"Not Found"}, 404)           
+        password = data['password']
+        if bcrypt.checkpw(password.encode('utf-8'), user.password):
+            login_user(user, remember=True)
+            return "Logged in", 200
+        else:
+            return make_response("Wrong Password", 400)
 api.add_resource(Login, '/login')
 class Appointments(Resource):
+    @login_required
     def get(self):
         appts = Appointment.query.all()
         appts_ser =[a.to_dict() for a in appts]
-        return make_response(appts_ser, 200)
-        
-    def post(self):
-        data = request.get_json()
-        new_appt = Appointment(
-            date = data['date'],
-            time = data['time'],
-            payment = data['payment'],
-            type_of_service=data['type_of_service'], 
-        )
+        return make_response(appts_ser, 200) 
+
 api.add_resource(Appointments, '/appointments')
 
 class GetCurrent(Resource):
+    @login_required
     def get(self):
-        user_id = session.get('user_id')
-        if not user_id:
-            return make_response({'error': "User not authenticated"}, 400)       
-        user = User.query.get(user_id)
-        if not user:
-            return make_response({'errors':'User not found'}, 400)        
-        user_dict = user.to_dict()
-        return make_response(user_dict, 200)
+        user = current_user
+        if user:
+            return make_response(user.to_dict(), 200)
+        else:
+            return make_response({"message": "User not found"}, 404)
     def patch(self):
-        user_id = session.get('user_id')
-        user = User.query.get(user_id)
+        user = User.query.get(current_user)
         data = request.get_json()
         for attr in data:
             setattr(user, attr, data[attr])
@@ -115,31 +117,19 @@ class GetCurrent(Resource):
         db.session.commit()
         return make_response(user.to_dict(), 200)
 api.add_resource(GetCurrent, '/users/current')
-
-class Signup(Resource):
-    def post(self):
-        user = User()
-        data = request.get_json()
-        for attr in data:
-            setattr(user, attr, data[attr])
-        db.session.add(user)
-        db.session.commit()
-        return make_response(user.to_dict(), 200)
-api.add_resource(Signup, '/signup')
 # LOGOUT OPTIONAL
 class Logout(Resource):
-    
+    @login_required
     def delete(self):        
-        if session.get('user_id'):            
-            session['user_id'] = None            
-            return {}, 204       
+        if current_user:            
+            logout_user()           
+            return "Succesful Logout"      
         return {'error': '401 Unauthorized'}, 401
 api.add_resource(Logout, '/logout')
 class MakeAppointmentLoggedIn(Resource):
     def post(self):
-        user_id = session.get('user_id')
+        user_id = current_user
         data = request.get_json()
-        user = User.query.get(user_id)
         if not user_id:
             user = User()
             data = request.get_json()
@@ -148,11 +138,11 @@ class MakeAppointmentLoggedIn(Resource):
             user.email = data["email"]
             user.phone_number = data['phone_number']
             db.session.add(user)
+            new_user = user.id
+            print(new_user)
             db.session.commit()
-            user_id = user.id
-        db.session.commit()  
-        appointments = Appointment()
-        car = Car.query.filter(Car.plate_number == data['plate_number']).one_or_none()
+            appointments = Appointment()
+            car = Car.query.filter(Car.plate_number == data['plate_number']).one_or_none()
         if not car:
             new_car = Car()
             for attr in data:

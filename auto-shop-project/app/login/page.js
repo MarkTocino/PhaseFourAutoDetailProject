@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, SetUser] = useState('');
+  const [user, setUser] = useState('');
   const router = useRouter();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +29,8 @@ export default function login() {
       })
       const data = await response.json()
         if (data.ok)
-        return SetUser(data)
-      router.push('/account')
+        return setUser(data)
+      window.location.href = '/account'
     }
   }
 return (

@@ -1,27 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../Context/UserProvider";
 import { useRouter } from "next/navigation";
-function Test() {
-  const [user, setUser] = useState("");
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  useEffect(() => {
-    fetch("http://127.0.0.1:5555/users/current", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return null;
-        }
-      })
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-        console.log(data);
-      });
-  }, [router]);
+export default function Test () {
+const [loading, setLoading] = useState(true);
+const router = useRouter();
+const { user } = useContext(UserContext)
 
   const handleClick = () => {
     fetch("http://127.0.0.1:5555/logout", {
@@ -31,9 +15,6 @@ function Test() {
   };
   return (
     <div className="container">
-      {loading ? (
-        <>LOADING!!!!!!</>
-      ) : (
         <div style={{ width: "100%" }}>
           {user ? (
             <div>
@@ -56,9 +37,8 @@ function Test() {
                     );
                   })
                 ) : (
-                  <div>Loading ... </div>
+                  <div>There is no Appointment's </div>
                 )}
-
                 <a href="/accountsettings">Account Settings</a>
                 <a onClick={handleClick} href="/login">
                   Logout
@@ -66,14 +46,9 @@ function Test() {
               </div>
             </div>
           ) : (
-            <>
-              <a href="/login">{router.push("/login")}</a>
-            </>
+            <div>LOADING...</div>
           )}
         </div>
-      )}
     </div>
   );
 }
-
-export default Test;
