@@ -16,19 +16,24 @@ export default function Services() {
             <li>• Body Polishing</li>
             <li>• Tire & Rim Cleaning</li>
           </ol>
+
           <div className="service-body-text">
-            Your vehicle is constantly exposed to the environment, making it
-            susceptible to dirt, debris, brake dust, and road grime. We provide
-            thorough glass cleaning for optimal visibility, meticulous body
-            cleaning and polishing to protect and enhance your vehicle's finish,
-            and tire + rim cleaning to combat the relentless buildup from daily
-            driving.
+            <div className="border-b-2 border-red-700 h-[10px]"></div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
           </div>
         </div>
         <div className="service-image-div">
           <img src="/images/exterior.jpg" className="service-image" />
         </div>
       </div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto"></div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto mb-4"></div>
       {/*  */}
       <div className="service-block">
         <div className="service-image-div">
@@ -44,16 +49,20 @@ export default function Services() {
             <li>• Waste Removal and Vaccuum</li>
           </ol>
           <div className="service-body-text">
-            Everyday use can lead to the buildup of dirt and pollutants inside
-            both the passenger cabin and engine bay. We offer engine bay
-            cleaning to ensure optimal performance, surface polishing to restore
-            the shine of interior finishes, meticulous glass cleaning for clear
-            inside views, carpet cleaning to remove deep-seated dirt, and waste
-            removal combined with thorough vacuuming to ensure a clean,
-            refreshed space.
+          <div className="border-b-2 border-red-700 h-[10px]"></div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
           </div>
         </div>
       </div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto"></div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto"></div>
+
       {/*  */}
       <div className="service-block">
         <div className="service-text">
@@ -62,17 +71,24 @@ export default function Services() {
             Regular oil changes are commonly recommended every 4000-6000 miles.
             (varies among cars)
           </div>
-          <div>
-            {" "}
-            NEW FILTER
-            <br />
-            NEW OIL SPECIFIC TO YOUR CAR
+          <div className="service-body-text">
+          <div className="border-b-2 border-red-700 h-[10px]"></div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
           </div>
         </div>
         <div className="service-image-div">
           <img src="/images/oilchange.jpg" className="service-image" />
         </div>
       </div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto"></div>
+      <div className="border-b-2 border-white h-[10px] w-[90%] m-auto"></div>
+
       {/*  */}
       <div className="service-block">
         <div className="service-image-div">
@@ -84,6 +100,8 @@ export default function Services() {
             Ensuring that your brakes are in top condition is not just essential
             for the longevity of your car, but also for the safety of you and
             your passengers.
+            <div className="border-b-2 border-red-700 h-[10px]"></div>
+
             <h2>SIGNS YOU NEED NEW BRAKES/BRAKE PADS </h2>
             <ol>
               <li>• soft/spongy braking</li>

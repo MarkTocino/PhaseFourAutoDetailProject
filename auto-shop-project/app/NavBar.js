@@ -13,7 +13,7 @@ if (user === null){
             <img src="/images/Daco_721500.png" style={{marginLeft:"10px",display:"inline",height:"35px", width:"110px",filter:"invert(1)"}}/>
         </div>
     <nav className="navigation">
-      <a href="/dashboard">HOME</a>
+      <a href="/">HOME</a>
       <a href="/gallery">GALLERY</a>
       <a href="/market">MARKET</a>
       <a href="/services">SERVICES</a>
