@@ -1,13 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
+import { UserContext } from "../../Context/UserProvider";
 import * as yup from "yup";
+
 export const signup = () => {
+  const { user, setUser, BACKEND_URL } = useContext(UserContext);
   const router = useRouter();
-  const [user, setUser] = useState("");
+
   const onSubmit = () => {
-    fetch("http://127.0.0.1:5555/register", {
+    fetch(`${BACKEND_URL}/register`, {
       method: "POST",
       credentials: "include",
       headers: {

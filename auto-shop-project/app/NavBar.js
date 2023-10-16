@@ -4,9 +4,9 @@ import { UserContext } from '../Context/UserProvider'
 const NavBar = () => {
 const { user, setUser } = useContext(UserContext)
 
-if (user === null){
-  setUser(false)
-}
+// if (user === null){
+//   setUser(false)
+// }
   return (
     <header className="header">
         <div className="logo">DARREN'S AUTO DETAIL

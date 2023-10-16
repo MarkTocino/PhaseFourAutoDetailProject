@@ -1,35 +1,38 @@
-'use client'
-import React, {createContext, useState, useEffect} from 'react'
+import React, { createContext, useState, useEffect } from "react";
+
 // Create the Context
 export const UserContext = createContext();
-// This export is what I have to use
-export const UserProvider = ({children}) => {
-    const[user,setUser] = useState(false)
-    const [loading, setLoading] = useState(false)
-    useEffect(() => {
-      const fetchData = async() => {
-        try{
-          const response = await fetch("http://127.0.0.1:5555/users/current", {
-            credentials: "include"
-          });
-          if (response.ok) {
-            const data = await response.json();
-            setUser(data);
-            setLoading(true);
-          } else {
-            console.error("Request failed");
-            setLoading(true);
-          }
-        } catch (error) {
-          console.error("An error occurred:", error);
-          setLoading(true);
-        }
-      };
-      fetchData();
-    }, []);
+
+// UserProvider Component
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [appts, setAppts] = useState(null); 
+  const [loading, setLoading] = useState(true);
+  const BACKEND_URL = "http://127.0.0.1:5555"
+  useEffect(() => {
+    const fetchUser = fetch(`${BACKEND_URL}/users/current`, {
+      credentials: "include",
+    }).then((response) => (response.ok ? response.json() : null));
+
+    const fetchAppts = fetch(`${BACKEND_URL}/appointments`)
+      .then((response) => (response.ok ? response.json() : null));
+
+    Promise.all([fetchUser, fetchAppts])
+      .then(([userData, apptData]) => {
+        setUser(userData);
+        setAppts(apptData);
+      })
+      .catch((error) => {
+        console.error("Error occurred:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <UserContext.Provider value={{user, setUser, loading, setLoading}}>
+    <UserContext.Provider value={{ user, setUser, appts, setAppts, loading, setLoading, BACKEND_URL }}>
       {children}
     </UserContext.Provider>
-  )
-}
+  );
+};

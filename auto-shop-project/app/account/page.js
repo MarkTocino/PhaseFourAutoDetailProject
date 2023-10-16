@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 export default function Test () {
 const [loading, setLoading] = useState(true);
 const router = useRouter();
-const { user } = useContext(UserContext)
+const { user, setUser, BACKEND_URL } = useContext(UserContext)
 
   const handleClick = () => {
-    fetch("http://127.0.0.1:5555/logout", {
+    fetch(`${BACKEND_URL}/logout`, {
       method: "DELETE",
       credentials: "include",
     }).then((data) => setUser(data));

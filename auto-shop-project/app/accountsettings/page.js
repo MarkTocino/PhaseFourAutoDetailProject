@@ -1,28 +1,15 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext} from 'react'
+import { UserContext } from "../../Context/UserProvider";
 import { useFormik } from 'formik';
 import { useRouter } from "next/navigation";
 import * as yup from 'yup'
+const { user, setUser, BACKEND_URL} = useContext(UserContext)
 export const signup = () => {
   const router = useRouter();
-  const [user, SetUser] = useState('');
-  useEffect(() => {
-    fetch('http://127.0.0.1:5555/users/current', {
-        credentials: 'include'
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json()
-      } else {
-        return null
-      };
-    })
-    .then(data => SetUser(data))
-    .catch(error => console.error('Error fetching user data:', error));
-}, []);
-
+ 
   const onSubmit = () => {
-    fetch("http://127.0.0.1:5555/users/current", {
+    fetch(`${BACKEND_URL}/users/current`, {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -38,7 +25,7 @@ export const signup = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        SetUser(json);
+        setUser(json);
         router.push("/login");
   })};
   const basicSchema = yup.object().shape({

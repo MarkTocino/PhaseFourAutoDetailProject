@@ -1,38 +1,20 @@
 "use client";
 import { useFormik } from "formik";
 import { Router } from "next/dist/client/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../Context/UserProvider";
 
 export default function Appointment() {
+  const { user, setUser, BACKEND_URL, appts } = useContext(UserContext);
   let today = new Date();
+  today.setDate(today.getDate() + 1); 
   let timeAhead = new Date(today);
   timeAhead.setMonth(today.getMonth() + 2);
   today = today.toISOString().slice(0, 10);
   timeAhead = timeAhead.toISOString().slice(0, 10);
-  const [user, setUser] = useState("");
-  const [appts, setAppts] = useState([]);
-  useEffect(() => {
-    const fetchUser = fetch("http://127.0.0.1:5555/users/current", {
-      credentials: "include",
-    })
-      .then((response) => (response.ok ? response.json() : null))
-      .catch((error) => console.error("Error fetching user data:", error));
 
-    const fetchAppts = fetch("http://127.0.0.1:5555/appointments")
-      .then((response) => (response.ok ? response.json() : null))
-      .catch((error) =>
-        console.error("Error fetching appointment data:", error)
-      );
-
-    Promise.all([fetchUser, fetchAppts]).then(
-      ([userData, apptData]) => {
-        setUser(userData);
-        setAppts(apptData);
-      }
-    );
-  }, []);
   const onSubmit = () => {
-    fetch("http://127.0.0.1:5555/LoggedInAppointments", {
+    fetch(`${BACKEND_URL}/MakeAppointment`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -55,7 +37,7 @@ export default function Appointment() {
         type_of_service: formik.values.service.join(", "),
       }),
     }).then((response) => response.json());
-      return alert('Appointment Made!')
+    return alert("Appointment Made!");
   };
   const formik = useFormik({
     initialValues: {
@@ -69,16 +51,19 @@ export default function Appointment() {
       engine: "",
       plateNumber: "",
       date: today,
-      time: "08:00",
+      time: "00:00",
       service: "",
       notes: "",
     },
     onSubmit,
   });
-  let takenTimes = []
-  if (appts) appts.filter(appt =>appt.date === formik.values.date).forEach(appt => takenTimes.push(appt.time))
-  console.log(takenTimes)
-  console.log(takenTimes.includes("12:00"))
+  let takenTimes = [];
+  if (appts)
+    appts
+      .filter((appt) => appt.date === formik.values.date)
+      .forEach((appt) => takenTimes.push(appt.time));
+  console.log(takenTimes);
+  console.log('test)')
 
   return (
     <div
@@ -88,7 +73,6 @@ export default function Appointment() {
         paddingBottom: "60px",
         fontFamily: "'Oswald', sans-serif",
         backgroundImage: 'url("/images/tires.jpg")',
-        // backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundAttachment: "fixed",
         backgroundSize: "cover",
@@ -220,15 +204,105 @@ export default function Appointment() {
               onChange={formik.handleChange}
               value={formik.values.time}
             >
-              {takenTimes.includes("08:00") ? <option value="08:00" disabled style={{ textDecoration: 'line-through' }}>08:00 AM</option> : <option value="08:00">08:00 AM</option> }
-              {takenTimes.includes("09:00") ? <option value="09:00" disabled style={{ textDecoration: 'line-through' }}>09:00 PM</option> : <option value="09:00">09:00 AM</option> }
-              {takenTimes.includes("10:00") ? <option value="10:00" disabled style={{ textDecoration: 'line-through' }}>10:00 PM</option> : <option value="10:00">10:00 AM</option> }
-              {takenTimes.includes("11:00") ? <option value="11:00" disabled style={{ textDecoration: 'line-through' }}>11:00 PM</option> : <option value="11:00">11:00 AM</option> }
-              {takenTimes.includes("12:00") ? <option value="12:00" disabled style={{ textDecoration: 'line-through' }}>12:00 PM</option> : <option value="12:00">12:00 PM</option> }
-              {takenTimes.includes("13:00") ? <option value="13:00" disabled style={{ textDecoration: 'line-through' }}>01:00 PM</option> : <option value="13:00">01:00 PM</option> }
-              {takenTimes.includes("14:00") ? <option value="14:00" disabled style={{ textDecoration: 'line-through' }}>02:00 PM</option> : <option value="14:00">02:00 PM</option> }
-              {takenTimes.includes("15:00") ? <option value="15:00" disabled style={{ textDecoration: 'line-through' }}>03:00 PM</option> : <option value="15:00">03:00 PM</option> }
-              {takenTimes.includes("16:00") ? <option value="16:00" disabled style={{ textDecoration: 'line-through' }}>04:00 PM</option> : <option value="16:00">04:00 PM</option> }
+              {takenTimes.includes("08:00") ? (
+                <option
+                  value="08:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  08:00 AM
+                </option>
+              ) : (
+                <option value="08:00">08:00 AM</option>
+              )}
+              {takenTimes.includes("09:00") ? (
+                <option
+                  value="09:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  09:00 PM
+                </option>
+              ) : (
+                <option value="09:00">09:00 AM</option>
+              )}
+              {takenTimes.includes("10:00") ? (
+                <option
+                  value="10:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  10:00 PM
+                </option>
+              ) : (
+                <option value="10:00">10:00 AM</option>
+              )}
+              {takenTimes.includes("11:00") ? (
+                <option
+                  value="11:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  11:00 PM
+                </option>
+              ) : (
+                <option value="11:00">11:00 AM</option>
+              )}
+              {takenTimes.includes("12:00") ? (
+                <option
+                  value="12:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  12:00 PM
+                </option>
+              ) : (
+                <option value="12:00">12:00 PM</option>
+              )}
+              {takenTimes.includes("13:00") ? (
+                <option
+                  value="13:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  01:00 PM
+                </option>
+              ) : (
+                <option value="13:00">01:00 PM</option>
+              )}
+              {takenTimes.includes("14:00") ? (
+                <option
+                  value="14:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  02:00 PM
+                </option>
+              ) : (
+                <option value="14:00">02:00 PM</option>
+              )}
+              {takenTimes.includes("15:00") ? (
+                <option
+                  value="15:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  03:00 PM
+                </option>
+              ) : (
+                <option value="15:00">03:00 PM</option>
+              )}
+              {takenTimes.includes("16:00") ? (
+                <option
+                  value="16:00"
+                  disabled
+                  style={{ textDecoration: "line-through" }}
+                >
+                  04:00 PM
+                </option>
+              ) : (
+                <option value="16:00">04:00 PM</option>
+              )}
             </select>
           </div>
         </div>
@@ -255,7 +329,9 @@ export default function Appointment() {
                   id="option2"
                   name="service"
                   value="Brake/Brake Pad Replacement"
-                  checked={formik.values.service.includes("Brake/Brake Pad Replacement")}
+                  checked={formik.values.service.includes(
+                    "Brake/Brake Pad Replacement"
+                  )}
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option2">
@@ -268,11 +344,13 @@ export default function Appointment() {
                   id="option3"
                   name="service"
                   value="Tire & Rim Cleaning"
-                  checked={formik.values.service.includes("Tire & Rim Cleaning")}
+                  checked={formik.values.service.includes(
+                    "Tire & Rim Cleaning"
+                  )}
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option3">
-                Tire & Rim Cleaning
+                  Tire & Rim Cleaning
                 </label>
               </li>
               <li>
@@ -285,7 +363,7 @@ export default function Appointment() {
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option4">
-                Body Polishing
+                  Body Polishing
                 </label>
               </li>
               <li>
@@ -307,26 +385,30 @@ export default function Appointment() {
                   id="option6"
                   name="service"
                   value="Engine Bay Cleaning"
-                  checked={formik.values.service.includes("Engine Bay Cleaning")}
+                  checked={formik.values.service.includes(
+                    "Engine Bay Cleaning"
+                  )}
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option6">
-                Engine Bay Cleaning
+                  Engine Bay Cleaning
                 </label>
               </li>
             </ul>
             <ul style={{ fontSize: "22px", width: "60%" }}>
-            <li>
+              <li>
                 <input
                   type="checkbox"
                   id="option7"
                   name="service"
                   value="Interior Surface Polishing"
-                  checked={formik.values.service.includes("Interior Surface Polishing")}
+                  checked={formik.values.service.includes(
+                    "Interior Surface Polishing"
+                  )}
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option7">
-                Interior Surface Polishing
+                  Interior Surface Polishing
                 </label>
               </li>
               <li>
@@ -339,7 +421,7 @@ export default function Appointment() {
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option8">
-                Glass Cleaning
+                  Glass Cleaning
                 </label>
               </li>
               <li>
@@ -352,7 +434,7 @@ export default function Appointment() {
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option9">
-                Carpet Cleaning
+                  Carpet Cleaning
                 </label>
               </li>
               <li>
@@ -361,11 +443,13 @@ export default function Appointment() {
                   id="option10"
                   name="service"
                   value="Waste Removal & Vacuuming"
-                  checked={formik.values.service.includes("Waste Removal & Vacuuming")}
+                  checked={formik.values.service.includes(
+                    "Waste Removal & Vacuuming"
+                  )}
                   onChange={formik.handleChange}
                 />
                 <label className="service-li" htmlFor="option10">
-                Waste Removal & Vacuuming
+                  Waste Removal & Vacuuming
                 </label>
               </li>
             </ul>

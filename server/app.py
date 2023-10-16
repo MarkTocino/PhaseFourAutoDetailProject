@@ -91,8 +91,8 @@ class Login(Resource):
         else:
             return make_response("Wrong Password", 400)
 api.add_resource(Login, '/login')
+
 class Appointments(Resource):
-    @login_required
     def get(self):
         appts = Appointment.query.all()
         appts_ser =[a.to_dict() for a in appts]
@@ -117,6 +117,7 @@ class GetCurrent(Resource):
         db.session.commit()
         return make_response(user.to_dict(), 200)
 api.add_resource(GetCurrent, '/users/current')
+
 # LOGOUT OPTIONAL
 class Logout(Resource):
     @login_required
@@ -126,42 +127,42 @@ class Logout(Resource):
             return "Succesful Logout"      
         return {'error': '401 Unauthorized'}, 401
 api.add_resource(Logout, '/logout')
-class MakeAppointmentLoggedIn(Resource):
+
+class MakeAppointment(Resource):
     def post(self):
-        user_id = current_user
         data = request.get_json()
-        if not user_id:
+        user = User.query.filter(User.email == data["email"]).one_or_none();
+        if not user:
             user = User()
-            data = request.get_json()
             user.first_name = data['first_name']
             user.last_name = data['last_name']
             user.email = data["email"]
             user.phone_number = data['phone_number']
             db.session.add(user)
-            new_user = user.id
-            print(new_user)
             db.session.commit()
-            appointments = Appointment()
-            car = Car.query.filter(Car.plate_number == data['plate_number']).one_or_none()
+
+        car = Car.query.filter(Car.plate_number == data['plate_number']).one_or_none()
         if not car:
-            new_car = Car()
+            car = Car()
             for attr in data:
-                setattr(new_car, attr, data[attr])
-            setattr(new_car, 'user_id', user.id)
-            db.session.add(new_car)
+                setattr(car, attr, data[attr])
+            setattr(car, 'user_id', car.id)
+            db.session.add(car)
             db.session.commit()
-        carss = Car.query.filter(Car.plate_number == data['plate_number']).one_or_none()
+
+        appointment = Appointment()
         for attr in data:
-            setattr(appointments, attr, data[attr])
-        # appointment is the call of the instancce
-        # user_id is what we are targeting
-        # userID is what we are changing it into
-        setattr(appointments, 'user_id', user.id)
-        setattr(appointments, 'car_id', carss.id)
-        db.session.add(appointments)
+            setattr(appointment, attr, data[attr])
+        
+        setattr(appointment, 'user_id', user.id)
+        setattr(appointment, 'car_id', car.id)
+        db.session.add(appointment)
         db.session.commit()
-        return make_response(appointments.to_dict(), 200)
-api.add_resource(MakeAppointmentLoggedIn, '/LoggedInAppointments')
+
+        return make_response(appointment.to_dict(), 200)
+
+api.add_resource(MakeAppointment, '/MakeAppointment')
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug = True )
