@@ -1,4 +1,4 @@
-from app import app
+from app import app, bcrypt
 from models import db, User, Car, Appointment
 
 if __name__ == '__main__':
@@ -9,8 +9,12 @@ if __name__ == '__main__':
         Appointment.query.delete()
 
         print("Seeding users...")
-        sam = User(first_name="Sam", last_name="Ou", phone_number=17187363560, email="Sam@hotmail.com", password ='YoungKing')
-        mark = User(first_name="Mark", last_name="Tocino", phone_number=5163002931, email="Mark@gmail.com", password ='King')
+        hashed_password_sam = bcrypt.hashpw('YoungKing'.encode('utf-8'),bcrypt.gensalt())
+        hashed_password_mark = bcrypt.hashpw('King'.encode('utf-8'),bcrypt.gensalt())
+
+
+        sam = User(first_name="Sam", last_name="Ou", phone_number=7187363560, email="Sam@hotmail.com", password=hashed_password_sam)
+        mark = User(first_name="Mark", last_name="Tocino", phone_number=5163002931, email="Mark@gmail.com", password=hashed_password_mark)
         users=[sam,mark]
         db.session.add_all(users)
         db.session.commit()

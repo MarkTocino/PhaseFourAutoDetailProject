@@ -67,7 +67,7 @@ class Register(Resource):
         hashed=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            return make_response("Username has already been used"), 400
+            return make_response("Email is already in use"), 400
         try:
             user = User( email=email,password=hashed, first_name=first_name, last_name=last_name, phone_number=phone_number)
             db.session.add(user)
@@ -84,8 +84,10 @@ class Login(Resource):
         user = User.query.filter(User.email == data['email']).first()
         if not user:
            return make_response({"error":"Not Found"}, 404)           
-        password = data['password']
-        if bcrypt.checkpw(password.encode('utf-8'), user.password):
+        password = data['password'].encode('utf-8')
+        hashed_password = user.password.encode('utf-8')
+
+        if bcrypt.checkpw(password, hashed_password):  
             login_user(user, remember=True)
             return "Logged in", 200
         else:
@@ -131,7 +133,7 @@ api.add_resource(Logout, '/logout')
 class MakeAppointment(Resource):
     def post(self):
         data = request.get_json()
-        user = User.query.filter(User.email == data["email"]).one_or_none();
+        user = User.query.filter(User.email == data['email']).first()
         if not user:
             user = User()
             user.first_name = data['first_name']

@@ -7,12 +7,12 @@ import { UserContext } from "../../Context/UserProvider";
 export default function Appointment() {
   const { user, setUser, BACKEND_URL, appts } = useContext(UserContext);
   let today = new Date();
-  today.setDate(today.getDate() + 1); 
+  today.setDate(today.getDate() + 1);
   let timeAhead = new Date(today);
   timeAhead.setMonth(today.getMonth() + 2);
   today = today.toISOString().slice(0, 10);
   timeAhead = timeAhead.toISOString().slice(0, 10);
-
+  console.log(user);
   const onSubmit = () => {
     fetch(`${BACKEND_URL}/MakeAppointment`, {
       method: "POST",
@@ -21,11 +21,11 @@ export default function Appointment() {
         "Content-Type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify({
-        first_name: formik.values.firstName,
-        last_name: formik.values.lastName,
-        email: formik.values.email,
+        first_name: user ? user.first_name : formik.values.firstName,
+        last_name: user ? user.last_name : formik.values.lastName,
+        email: user ? user.email : formik.values.email,
+        phone_number: user ? user.phone_number : formik.values.phoneNumber,
         password: formik.values.password,
-        phone_number: formik.values.phoneNumber,
         make: formik.values.make,
         model: formik.values.model,
         year: formik.values.year,
@@ -63,7 +63,7 @@ export default function Appointment() {
       .filter((appt) => appt.date === formik.values.date)
       .forEach((appt) => takenTimes.push(appt.time));
   console.log(takenTimes);
-  console.log('test)')
+  console.log("test)");
 
   return (
     <div
