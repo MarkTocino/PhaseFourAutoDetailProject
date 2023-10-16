@@ -12,33 +12,45 @@ export default function Appointment() {
   timeAhead.setMonth(today.getMonth() + 2);
   today = today.toISOString().slice(0, 10);
   timeAhead = timeAhead.toISOString().slice(0, 10);
-  console.log(user);
-  const onSubmit = () => {
-    fetch(`${BACKEND_URL}/MakeAppointment`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify({
-        first_name: user ? user.first_name : formik.values.firstName,
-        last_name: user ? user.last_name : formik.values.lastName,
-        email: user ? user.email : formik.values.email,
-        phone_number: user ? user.phone_number : formik.values.phoneNumber,
-        password: formik.values.password,
-        make: formik.values.make,
-        model: formik.values.model,
-        year: formik.values.year,
-        engine: formik.values.engine,
-        plate_number: formik.values.plateNumber,
-        date: formik.values.date,
-        time: formik.values.time,
-        // It's creating an array so, we use a .join to seperate each one to a string! That's what a .join does look at db
-        type_of_service: formik.values.service.join(", "),
-      }),
-    }).then((response) => response.json());
-    return alert("Appointment Made!");
+
+  const onSubmit = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/MakeAppointment`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          first_name: user ? user.first_name : formik.values.firstName,
+          last_name: user ? user.last_name : formik.values.lastName,
+          email: user ? user.email : formik.values.email,
+          phone_number: user ? user.phone_number : formik.values.phoneNumber,
+          password: formik.values.password,
+          make: formik.values.make,
+          model: formik.values.model,
+          year: formik.values.year,
+          engine: formik.values.engine,
+          plate_number: formik.values.plateNumber,
+          date: formik.values.date,
+          time: formik.values.time,
+          type_of_service: formik.values.service.join(", "),
+        }),
+      });
+  
+      if (response.ok) {
+        await response.json();
+        alert("Appointment Made!");
+      } else {
+        console.error("Failed to make the appointment");
+      }
+    } catch (error) {
+      console.error("There was an error making the appointment:", error);
+    }
   };
+  
+  let takenTimes = [];
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -51,19 +63,18 @@ export default function Appointment() {
       engine: "",
       plateNumber: "",
       date: today,
-      time: "00:00",
+      time: "07:00",
       service: "",
       notes: "",
     },
     onSubmit,
   });
-  let takenTimes = [];
+
   if (appts)
     appts
       .filter((appt) => appt.date === formik.values.date)
       .forEach((appt) => takenTimes.push(appt.time));
-  console.log(takenTimes);
-  console.log("test)");
+  // console.log(takenTimes);
 
   return (
     <div
