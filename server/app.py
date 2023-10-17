@@ -84,10 +84,8 @@ class Login(Resource):
         user = User.query.filter(User.email == data['email']).first()
         if not user:
            return make_response({"error":"Not Found"}, 404)           
-        password = data['password'].encode('utf-8')
-        hashed_password = user.password.encode('utf-8')
-
-        if bcrypt.checkpw(password, hashed_password):  
+        password = data['password']
+        if bcrypt.checkpw(password.encode('utf-8'), user.password): 
             login_user(user, remember=True)
             return "Logged in", 200
         else:
