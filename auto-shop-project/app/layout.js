@@ -5,10 +5,6 @@ import { UserProvider } from '../Context/UserProvider'
 import NavBar from './NavBar'
 
 const inter = Inter({ subsets: ['latin'] })
-// export const metadata = {
-//   title: "Darren's Auto Detail - Quality Auto-Service in Queens",
-//   description: 'Precision Care for Your Vehicle',
-// }
 export default function RootLayout({ children }) {
   return (
     <UserProvider>

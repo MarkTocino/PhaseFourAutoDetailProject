@@ -195,6 +195,7 @@ body {
   min-height: calc(100vh - 70px);
   color: white;
   overflow-y: scroll;
+  /* justify-content: center; */
 }
 .acc-container {
   font-family: "Oswald", sans-serif;
@@ -285,7 +286,7 @@ body {
   /* border-bottom: solid; */
   border-style: dashed;
   border-color: red;
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
   /* min-height: 400px; */
   display: flex;
   color: white;
@@ -311,7 +312,7 @@ body {
 .service-image-div {
   background-color: black;
   width: 50%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,7 +321,12 @@ body {
   object-fit: contain;
   /* height: 70%; */
   width: 95%;
-  
+  border-radius: 4px;
+}
+.market-image {
+  object-fit: contain;
+  /* height: 70%; */
+  width: 70%;
   border-radius: 4px;
 }
 .links {
@@ -399,21 +405,25 @@ h2 {
     background-color: gray;
     width: 80vw;
   }
-  .login-wrap, .signup-wrap {
+  .login-wrap,
+  .signup-wrap {
     width: 85%;
   }
-  .service-block{
+  .service-block {
     flex-direction: column;
     align-items: center;
   }
-  .service-text, .service-image-div, .service-body-text{
+  .service-text,
+  .service-image-div,
+  .service-body-text {
     width: 90%;
   }
-  .service-block{
+  .service-block {
     min-height: 100vh;
-    ;
   }
-  .service-image-div{
-    max-height:30%;
+  .service-image-div {
+    max-height: 30%;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 }

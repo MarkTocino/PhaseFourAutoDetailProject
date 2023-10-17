@@ -15,7 +15,7 @@ export default function Contact() {
         FEEL FREE TO CONTACT US AT
         <span style={{ textDecoration: "underline", fontWeight: "20", fontSize:"20px" }}>
           {" "}
-          DARRENSAUTODETAIL@GMAIL.COM{" "}
+          SAMPLE@EMAIL.COM{" "}
         </span>
       </h1>
 

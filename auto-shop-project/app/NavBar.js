@@ -9,7 +9,7 @@ const { user, setUser } = useContext(UserContext)
 // }
   return (
     <header className="header">
-        <div className="logo">DARREN'S AUTO DETAIL
+        <div className="logo">AUTO DETAIL
             <img src="/images/Daco_721500.png" style={{marginLeft:"10px",display:"inline",height:"35px", width:"110px",filter:"invert(1)"}}/>
         </div>
     <nav className="navigation">
