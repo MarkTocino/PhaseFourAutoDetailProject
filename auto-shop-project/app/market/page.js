@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import MarketComponent from "./MarketComponent";
+import { UserContext } from "../../Context/UserProvider";
+
 
 export default function Market() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const {setSelectedCar, selectedCar, BACKEND_URL} = useContext(UserContext);
 
   const image_srcs = [
     {
@@ -15,6 +17,7 @@ export default function Market() {
       price: "$31,000",
       miles: "6,530",
       condition: "Modified, slightly used",
+      code: "G3M1KF",
     },
     {
       image: "/images/subie.jpg",
@@ -24,6 +27,7 @@ export default function Market() {
       price: "$29,000",
       miles: "8,325",
       condition: "Mint",
+      code: "8W5C7D",
     },
     {
       image: "/images/carshop.jpg",
@@ -33,20 +37,24 @@ export default function Market() {
       price: "$19,000",
       miles: "105,024",
       condition: "Restored",
+      code: "B4H8ZP",
     },
     {
-      image: "/images/bmw6.jpeg",
+      image: "/images/m4comp.jpeg",
       make: "BMW",
       model: "M4 Competition",
       year: "2021",
       price: "$71,000",
       miles: "35,155",
       condition: "Used",
+      code: "L5U3FG",
     },
   ];
+
+  
   function handleClick(data) {
-    setSelectedImage(data);
-    //messing around with giving images a click function
+    setSelectedCar(data);
+    
   }
   const image_divs = image_srcs.map((image) => {
     return (
@@ -54,10 +62,9 @@ export default function Market() {
         <td className="py-2">{image.make}</td>
         <td>{image.model}</td>
         <td>{image.year}</td>
-        <td>{image.condition}</td>
         <td>{image.miles}</td>
-        <td onClick={() => handleClick(image)}>
-          <img className="w-[20px] m-auto" src="/svgs/eye.svg" alt="view-eye" />
+        <td className='view-eye' onClick={() => handleClick(image)}>
+          <img className=" w-[20px] m-auto" src="/svgs/eye.svg" alt="view-eye" />
         </td>
       </tr>
     );
@@ -65,9 +72,8 @@ export default function Market() {
   return (
     <div className="container">
       <h1 className="route-head">MARKET</h1>
-      <p className="subtext">
-        QUALITY USED CARS <br /> CONTACT US AT SAMPLE@EMAIL.COM WITH ANY
-        QUESTIONS OR OFFERS
+      <p className="subtext w-4/5 m-auto">
+        QUALITY USED CARS <br /> VIEW A CAR TO MAKE AN OFFER
       </p>
       <table className="m-auto w-4/5 border-2 border-white mb-4">
         <tbody>
@@ -76,13 +82,12 @@ export default function Market() {
             <td>Model</td>
             <td>Year</td>
             <td>Condition</td>
-            <td>Odometer</td>
             <td className="text-blue">View</td>
           </tr>
           {image_divs}
         </tbody>
       </table>
-      {selectedImage && <MarketComponent {...selectedImage} />}
+      {selectedCar && <MarketComponent {...selectedCar} />}
     </div>
   );
 }

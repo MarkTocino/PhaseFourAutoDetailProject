@@ -48,3 +48,24 @@ class Appointment(db.Model, SerializerMixin):
     car_id = db.Column(db.Integer, db.ForeignKey('cars.id'))
     serialize_rules = ('-car.appointments', '-user.appointments',)
 
+class MarketCar(db.Model, SerializerMixin):
+    __tablename__ = 'marketcars'
+
+    id = db.Column(db.Integer, primary_key=True)
+    make = db.Column(db.String)
+    model = db.Column(db.String)
+    year = db.Column(db.String)
+    miles = db.Column(db.String)
+    condition = db.Column(db.String)
+    price = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+class Offer(db.Model, SerializerMixin):
+    __tablename__ = 'offers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String)
+    time = db.Column(db.String)
+    type_of_service = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    marketcar_id = db.Column(db.Integer, db.ForeignKey('marketcars.id'))

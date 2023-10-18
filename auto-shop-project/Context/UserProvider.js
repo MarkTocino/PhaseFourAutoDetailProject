@@ -5,17 +5,19 @@ export const UserContext = createContext();
 
 // UserProvider Component
 export const UserProvider = ({ children }) => {
+  const [selectedCar, setSelectedCar] = useState(null);
   const [user, setUser] = useState(null);
-  const [appts, setAppts] = useState(null); 
+  const [appts, setAppts] = useState(null);
   const [loading, setLoading] = useState(true);
-  const BACKEND_URL = "http://127.0.0.1:5555"
+  const BACKEND_URL = "http://127.0.0.1:5555";
   useEffect(() => {
     const fetchUser = fetch(`${BACKEND_URL}/users/current`, {
       credentials: "include",
     }).then((response) => (response.ok ? response.json() : null));
 
-    const fetchAppts = fetch(`${BACKEND_URL}/appointments`)
-      .then((response) => (response.ok ? response.json() : null));
+    const fetchAppts = fetch(`${BACKEND_URL}/appointments`).then((response) =>
+      response.ok ? response.json() : null
+    );
 
     Promise.all([fetchUser, fetchAppts])
       .then(([userData, apptData]) => {
@@ -31,7 +33,19 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, appts, setAppts, loading, setLoading, BACKEND_URL }}>
+    <UserContext.Provider
+      value={{
+        selectedCar,
+        setSelectedCar,
+        user,
+        setUser,
+        appts,
+        setAppts,
+        loading,
+        setLoading,
+        BACKEND_URL,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

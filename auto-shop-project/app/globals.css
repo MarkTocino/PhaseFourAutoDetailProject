@@ -99,12 +99,29 @@ body {
   outline: none;
   color: white;
 }
+.market-input {
+  background-color: rgb(76, 76, 76);
+  padding-left: 12px;
+  outline: none;
+  color: white;
+}
 .login-wrap {
   height: 45px;
   width: 60%;
   display: inline-flex;
   background-color: rgb(76, 76, 76);
   /* border-radius:5px; */
+  border: solid;
+  border-color: rgb(169, 169, 169);
+}
+.market-wrap {
+  margin-left: 10px;
+  padding: 7px;
+  height: 45px;
+  min-width: 215px;
+  display: inline-flex;
+  background-color: rgb(76, 76, 76);
+  border-radius:5px;
   border: solid;
   border-color: rgb(169, 169, 169);
 }
@@ -181,7 +198,6 @@ body {
   color: rgb(125, 77, 77);
 }
 .subtext {
-  width: 100vw;
   font-size: 24px;
   text-align: center;
   color: rgb(191, 191, 191);
@@ -316,6 +332,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin:auto;
 }
 .service-image {
   object-fit: contain;
@@ -328,6 +345,9 @@ body {
   /* height: 70%; */
   width: 70%;
   border-radius: 4px;
+}
+.view-eye:hover{
+  cursor:pointer;
 }
 .links {
   text-decoration: underline;
@@ -344,25 +364,24 @@ h2 {
   text-decoration: underline;
 }
 
-.appointment-BoxContainer {
+/* .appointment-BoxContainer {
   text-align: center;
   display: flex;
   align-content: center;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  width: 100vw;
   color: white;
 }
 .appointment-BoxContainer div {
   margin-top: 20px;
-  /* width:100vw; */
-}
+} */
 
 .appointment-div {
-  padding: 5px;
+  padding: 10px;
   border: solid;
   border-color: red;
   width: 30%;
+  min-width: 290px;
   margin: 10px;
   font-size: 18px;
 }

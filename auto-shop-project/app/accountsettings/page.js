@@ -1,11 +1,12 @@
 'use client'
+
 import React, { useState, useEffect, useContext} from 'react'
 import { UserContext } from "../../Context/UserProvider";
 import { useFormik } from 'formik';
 import { useRouter } from "next/navigation";
 import * as yup from 'yup'
-const { user, setUser, BACKEND_URL} = useContext(UserContext)
 export const signup = () => {
+  const { user, setUser, BACKEND_URL} = useContext(UserContext)
   const router = useRouter();
  
   const onSubmit = () => {

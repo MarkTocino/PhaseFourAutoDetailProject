@@ -1,4 +1,4 @@
-from models import db, User, Car, Appointment
+from models import db, User, Car, Appointment, MarketCar, Offer
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from flask import Flask, make_response, jsonify, request, session
@@ -163,6 +163,18 @@ class MakeAppointment(Resource):
 
 api.add_resource(MakeAppointment, '/MakeAppointment')
 
+class MarketOffer(Resource):
+    def post(self):
+        data = request.get_json()
+        offer = Offer();
+        for attr in data:
+            setattr(offer, attr, data[attr])
+        db.session.add(offer)
+        db.session.commit()
+    
+        return make_response(offer.to_dict(), 200)
+    
+api.add_resource(MarketOffer, '/makeOffer')
 
 if __name__ == "__main__":
     app.run(port=5555, debug = True )
