@@ -56,7 +56,7 @@ class MarketCar(db.Model, SerializerMixin):
     make = db.Column(db.String)
     model = db.Column(db.String)
     year = db.Column(db.Integer)
-    miles = db.Column(db.String)
+    miles = db.Column(db.Integer)
     condition = db.Column(db.String)
     code = db.Column(db.String)
     price = db.Column(db.Integer)

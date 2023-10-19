@@ -12,9 +12,9 @@ export default function Market() {
       image: "/images/accord.jpg",
       make: "Honda",
       model: "Accord",
-      year: "2022",
-      price: "$31,000",
-      miles: "6,530",
+      year: 2022,
+      price: 31000,
+      miles: 6530,
       condition: "Modified, slightly used",
       code: "G3M1KF",
     },
@@ -22,9 +22,9 @@ export default function Market() {
       image: "/images/subie.jpg",
       make: "Subaru",
       model: "Forester",
-      year: "2022",
-      price: "$29,000",
-      miles: "8,325",
+      year: 2022,
+      price: 29000,
+      miles: 8325,
       condition: "Mint",
       code: "8W5C7D",
     },
@@ -32,9 +32,9 @@ export default function Market() {
       image: "/images/carshop.jpg",
       make: "Honda",
       model: "S2000",
-      year: "2009",
-      price: "$19,000",
-      miles: "105,024",
+      year: 2009,
+      price: 19000,
+      miles: 105024,
       condition: "Restored",
       code: "B4H8ZP",
     },
@@ -42,9 +42,9 @@ export default function Market() {
       image: "/images/m4comp.jpeg",
       make: "BMW",
       model: "M4 Competition",
-      year: "2021",
-      price: "$71,000",
-      miles: "35,155",
+      year: 2021,
+      price: 71000,
+      miles: 35155,
       condition: "Used",
       code: "L5U3FG",
     },
@@ -62,7 +62,7 @@ export default function Market() {
         <td className="py-2">{image.make}</td>
         <td>{image.model}</td>
         <td>{image.year}</td>
-        <td>{image.miles}</td>
+        <td>{image.miles.toLocaleString()}</td>
         <td className='view-eye' onClick={() => handleClick(image)}>
           <img className=" w-[20px] m-auto" src="/svgs/eye.svg" alt="view-eye" />
         </td>
@@ -77,11 +77,11 @@ export default function Market() {
       </p>
       <table className="m-auto w-4/5 border-2 border-white mb-4">
         <tbody>
-          <tr id="row-0" className="text-xl">
+          <tr id="row-0" className="text-xl sm:text-3xl">
             <td>Make</td>
             <td>Model</td>
             <td>Year</td>
-            <td>Condition</td>
+            <td>Odometer</td>
             <td className="text-blue">View</td>
           </tr>
           {image_divs}

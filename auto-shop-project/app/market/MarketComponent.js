@@ -61,14 +61,14 @@ export default function MarketComponent(props) {
           <ol className="text-xl sm:text-3xl">
             <li>
               Starting Bid:{" "}
-              <span className="text-green-500">${props.price}</span>
+              <span className="text-green-500">${props.price.toLocaleString()}</span>
             </li>
             <li>Condition: {props.condition}</li>
-            <li>{props.miles} miles</li>
+            <li>{props.miles.toLocaleString()} miles</li>
             <li>
               <span className="text-amber-500">
                 Highest offer:{" "}
-                <span className="text-green-500">${highestBid}</span>
+                <span className="text-green-500">${highestBid.toLocaleString()}</span>
               </span>
             </li>
           </ol>

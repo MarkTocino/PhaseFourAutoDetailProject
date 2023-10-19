@@ -34,10 +34,10 @@ if __name__ == '__main__':
         db.session.commit()
 
         print("Seeding market cars...")
-        marketcar1 = MarketCar(price=31000, image="/images/accord.jpg", make="Honda", model="Accord", year="2022", miles="6,335", condition="Modified, slightly used", code="G3M1KF")
-        marketcar2 = MarketCar(price=29000, image="/images/subie.jpg", make="Subaru", model="Forester", year="2022", miles="8,325", condition="Mint", code="8W5C7D")
-        marketcar3 = MarketCar(price=19000, image="/images/carshop.jpg", make="Honda", model="S2000", year="2009", miles="105,024", condition="Restored", code="B4H8ZP")
-        marketcar4 = MarketCar(price=71000, image="/images/m4comp.jpeg", make="BMW", model="M4 Competition", year="2021", miles="35,155", condition="Used", code="L5U3FG")
+        marketcar1 = MarketCar(price=31000, image="/images/accord.jpg", make="Honda", model="Accord", year=2022, miles=6335, condition="Modified, slightly used", code="G3M1KF")
+        marketcar2 = MarketCar(price=29000, image="/images/subie.jpg", make="Subaru", model="Forester", year=2022, miles=8325, condition="Mint", code="8W5C7D")
+        marketcar3 = MarketCar(price=19000, image="/images/carshop.jpg", make="Honda", model="S2000", year=2009, miles=105024, condition="Restored", code="B4H8ZP")
+        marketcar4 = MarketCar(price=71000, image="/images/m4comp.jpeg", make="BMW", model="M4 Competition", year=2021, miles=35155, condition="Used", code="L5U3FG")
         marketcars=[marketcar1, marketcar2, marketcar3, marketcar4]
         db.session.add_all(marketcars)
         db.session.commit()
