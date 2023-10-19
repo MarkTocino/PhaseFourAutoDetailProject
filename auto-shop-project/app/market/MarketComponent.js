@@ -1,15 +1,22 @@
-"use client";
 import { useFormik } from "formik";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../Context/UserProvider";
-
+import { useRouter } from "next/navigation";
 export default function MarketComponent(props) {
-  const { selectedCar, BACKEND_URL, user } = useContext(UserContext);
+  const { selectedCar, BACKEND_URL, user, offers, marketCars } =
+    useContext(UserContext);
+  const router = useRouter();
+  const allOffers = offers
+    ? offers
+        .filter((offer) => offer.marketcar_id == selectedCar.id)
+        .map((offer) => offer.offer)
+    : null;
+  const highestBid = allOffers ? Math.max(...allOffers) : null;
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BACKEND_URL}/MakeAppointment`, {
+      const response = await fetch(`${BACKEND_URL}/offers`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -18,17 +25,16 @@ export default function MarketComponent(props) {
         body: JSON.stringify({
           email: user ? user.email : formik.values.email,
           phone_number: user ? user.phone_number : formik.values.phone,
-          make: formik.values.make,
-          model: formik.values.model,
-          year: formik.values.year,
-          miles: formik.values.miles,
+          code: selectedCar.code,
           offer: formik.values.offer,
         }),
       });
 
       if (response.ok) {
         await response.json();
-        alert("Appointment Made!");
+        alert("Offer submitted. Reload the page to see the new highest offer.");
+        router.refresh();
+        formik.resetForm()
       } else {
         console.error("Failed to make the appointment");
       }
@@ -41,10 +47,6 @@ export default function MarketComponent(props) {
       offer: "",
       email: "",
       phone: "",
-      make: selectedCar.make,
-      model: selectedCar.model,
-      year: selectedCar.year,
-      miles: selectedCar.miles,
     },
     onSubmit,
   });
@@ -59,12 +61,15 @@ export default function MarketComponent(props) {
           <ol className="text-xl sm:text-3xl">
             <li>
               Starting Bid:{" "}
-              <span className="text-green-500">{props.price}</span>
+              <span className="text-green-500">${props.price}</span>
             </li>
             <li>Condition: {props.condition}</li>
             <li>{props.miles} miles</li>
             <li>
-              <span className="text-amber-500">Highest offer:</span>
+              <span className="text-amber-500">
+                Highest offer:{" "}
+                <span className="text-green-500">${highestBid}</span>
+              </span>
             </li>
           </ol>
         </div>

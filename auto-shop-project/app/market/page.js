@@ -6,9 +6,8 @@ import { UserContext } from "../../Context/UserProvider";
 
 
 export default function Market() {
-  const {setSelectedCar, selectedCar, BACKEND_URL} = useContext(UserContext);
-
-  const image_srcs = [
+  const {setSelectedCar, selectedCar, BACKEND_URL, offers, marketCars} = useContext(UserContext);
+  const backup_Cars = [
     {
       image: "/images/accord.jpg",
       make: "Honda",
@@ -50,13 +49,14 @@ export default function Market() {
       code: "L5U3FG",
     },
   ];
-
+  
+  const market_Cars = marketCars? marketCars : backup_Cars;
   
   function handleClick(data) {
     setSelectedCar(data);
     
   }
-  const image_divs = image_srcs.map((image) => {
+  const image_divs = market_Cars.map((image) => {
     return (
       <tr className="border-t-2 " id="row-0" key={image.image}>
         <td className="py-2">{image.make}</td>

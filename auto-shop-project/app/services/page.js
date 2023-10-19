@@ -1,9 +1,9 @@
 export default function Services() {
   return (
     <div
+    className='py-5 sm:py-0'
       style={{
         fontFamily: "'Oswald', sans-serif",
-        scrollSnapType: "y proximity",
         overflowY: "scroll",
       }}
     >
@@ -37,7 +37,7 @@ export default function Services() {
       {/*  */}
       <div className="service-block">
         <div className="service-image-div">
-          <img src="/images/exterior.jpg" className="service-image" />
+          <img src="/images/interiorclean.jpeg" className="service-image" />
         </div>
         <div className="service-text">
           <h1 className="service-header">INTERIOR SERVICES</h1>

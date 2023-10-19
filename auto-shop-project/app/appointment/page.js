@@ -35,6 +35,7 @@ export default function Appointment() {
           date: formik.values.date,
           time: formik.values.time,
           type_of_service: formik.values.service.join(", "),
+          notes: formik.values.notes,
         }),
       });
   

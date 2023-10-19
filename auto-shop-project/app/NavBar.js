@@ -18,7 +18,6 @@ const { user, setUser } = useContext(UserContext)
       <a href="/market">MARKET</a>
       <a href="/services">SERVICES</a>
       <a href="/appointment">APPOINTMENT</a>
-      <a href="/contact">CONTACT US</a>
       {user ? <a href="/account">ACCOUNT</a> : <a href="/login">LOGIN</a>}
     </nav>
   </header>

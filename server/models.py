@@ -34,7 +34,7 @@ class Car(db.Model, SerializerMixin):
     plate_number = db.Column(db.String, unique = True)
     appointments = db.relationship('Appointment',cascade = 'all,delete',backref='car')
     serialize_rules=('-appointments.car',)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name="fk_car_user"))
 
 
 class Appointment(db.Model, SerializerMixin):
@@ -44,8 +44,9 @@ class Appointment(db.Model, SerializerMixin):
     date = db.Column(db.String)
     time = db.Column(db.String)
     type_of_service = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    car_id = db.Column(db.Integer, db.ForeignKey('cars.id'))
+    notes = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name="fk_appointment_user"))
+    car_id = db.Column(db.Integer, db.ForeignKey('cars.id', name="fk_appointment_car"))
     serialize_rules = ('-car.appointments', '-user.appointments',)
 
 class MarketCar(db.Model, SerializerMixin):
@@ -54,18 +55,22 @@ class MarketCar(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     make = db.Column(db.String)
     model = db.Column(db.String)
-    year = db.Column(db.String)
+    year = db.Column(db.Integer)
     miles = db.Column(db.String)
     condition = db.Column(db.String)
-    price = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    code = db.Column(db.String)
+    price = db.Column(db.Integer)
+    offers = db.relationship('Offer',cascade = 'all,delete',backref='marketcar')
+    serialize_rules=('-offers.marketcar',)
+
+    image = db.Column(db.String, unique = True)
     
 class Offer(db.Model, SerializerMixin):
     __tablename__ = 'offers'
 
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.String)
-    time = db.Column(db.String)
-    type_of_service = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    marketcar_id = db.Column(db.Integer, db.ForeignKey('marketcars.id'))
+    offer = db.Column(db.Integer)
+    email = db.Column(db.String)
+    phone_number = db.Column(db.String)
+    code = db.Column(db.String)
+    marketcar_id = db.Column(db.Integer, db.ForeignKey('marketcars.id', name="fk_offer_marketcar"))

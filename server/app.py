@@ -163,18 +163,31 @@ class MakeAppointment(Resource):
 
 api.add_resource(MakeAppointment, '/MakeAppointment')
 
-class MarketOffer(Resource):
+class MarketCars(Resource):
+    def get(self):
+        marketCars = MarketCar.query.all()
+        marketCars_ser =[a.to_dict() for a in marketCars]
+        return make_response(marketCars_ser, 200) 
+api.add_resource(MarketCars, '/marketCars')
+
+class Offers(Resource):
+    def get(self):
+        offers = Offer.query.all()
+        offers_ser =[a.to_dict() for a in offers]
+        return make_response(offers_ser, 200) 
     def post(self):
         data = request.get_json()
-        offer = Offer();
+        marketcar = MarketCar.query.filter(MarketCar.code == data["code"]).first()
+        offer = Offer()
         for attr in data:
             setattr(offer, attr, data[attr])
+        setattr(offer, 'marketcar_id', marketcar.id)
+
         db.session.add(offer)
         db.session.commit()
-    
         return make_response(offer.to_dict(), 200)
     
-api.add_resource(MarketOffer, '/makeOffer')
+api.add_resource(Offers, '/offers')
 
 if __name__ == "__main__":
     app.run(port=5555, debug = True )

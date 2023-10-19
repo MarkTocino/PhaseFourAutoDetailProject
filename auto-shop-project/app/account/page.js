@@ -28,10 +28,10 @@ export default function Test() {
             {user.appointments ? (
               user.appointments.map((appt) => {
                 return (
-                  <div key={appt.id} className="appointment-div">
-                    <span className="text-red-500">DATE:</span> {appt.date}
+                  <div key={appt.id} className="appointment-div rounded-md ">
+                    <span className="text-green-500 text-2xl">DATE:</span> {appt.date}
                     <br />
-                    <span className="text-red-500">TIME:</span> {appt.time}
+                    <span className="text-green-500 text-2xl">TIME:</span> {appt.time}
                     <br />
                     <span className="text-red-500">CAR:</span> {appt.car.make}{" "}
                     {appt.car.model} {appt.car.year}
@@ -41,6 +41,9 @@ export default function Test() {
                     <br />
                     <span className="text-red-500">SERVICE:</span>{" "}
                     {appt.type_of_service}
+                    <br />
+                    <span className="text-violet-500">Notes:</span>{" "}
+                    {appt.notes? appt.notes: "None"}
                   </div>
                 );
               })
