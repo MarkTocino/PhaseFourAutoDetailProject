@@ -11,7 +11,7 @@ export default function login() {
   const router = useRouter();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('submi')
+    console.log("submi");
     if (email.length === 0) {
       return "Email has been left blank";
     } else if (password.length === 0) {
@@ -29,7 +29,7 @@ export default function login() {
         }),
       });
       const data = await response.json();
-      if (data.ok) return setUser(data);
+      // if (data.ok) return setUser(data);
       window.location.href = "/account";
     }
   };
@@ -43,12 +43,12 @@ export default function login() {
         />
         <div className="centered-text" style={{ top: "50%" }}>
           <form className="login-box" onSubmit={handleFormSubmit}>
-            <h2>DARREN'S AUTO DETAIL</h2>
+            <h2>Account Login</h2>
             <img
-              src="/images/Daco_721500.png"
+              src="/images/logoCar.png"
               style={{ marginTop: "15px", height: "70px", width: "220px" }}
-            />
-            <div
+              alt="Logo"
+            />            <div
               className="login-wrap"
               style={{
                 marginTop: "20px",

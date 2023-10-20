@@ -77,8 +77,8 @@ export default function Market() {
       </p>
       <table className="m-auto w-4/5 border-2 border-white mb-4">
         <tbody>
-          <tr id="row-0" className="text-xl sm:text-3xl">
-            <td>Make</td>
+          <tr id="row-0" className=" text-xl sm:text-3xl xl:text-4xl">
+            <td className='py-2'>Make</td>
             <td>Model</td>
             <td>Year</td>
             <td>Odometer</td>

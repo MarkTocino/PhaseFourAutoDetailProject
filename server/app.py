@@ -60,19 +60,17 @@ class Register(Resource):
     def post(self):
         data = request.get_json()
         password = data['password']
-        first_name = data['first_name']
-        last_name=data['last_name']
         email = data['email']
-        phone_number=data['phone_number']
         hashed=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return make_response("Email is already in use"), 400
         try:
-            user = User( email=email,password=hashed, first_name=first_name, last_name=last_name, phone_number=phone_number)
+            user = User(email=email, password=hashed)
             db.session.add(user)
             db.session.commit()
-            return make_response("User has been created", 200)
+            login_user(user, remember=True)
+            return make_response(user.to_dict(), 200)
         except:
             return make_response("Failed to Create User"), 404
 api.add_resource(Register, '/register')

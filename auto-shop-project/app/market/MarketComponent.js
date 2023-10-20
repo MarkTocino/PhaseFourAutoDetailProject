@@ -34,7 +34,7 @@ export default function MarketComponent(props) {
         await response.json();
         alert("Offer submitted. Reload the page to see the new highest offer.");
         router.refresh();
-        formik.resetForm()
+        formik.resetForm();
       } else {
         console.error("Failed to make the appointment");
       }
@@ -61,14 +61,18 @@ export default function MarketComponent(props) {
           <ol className="text-xl sm:text-3xl">
             <li>
               Starting Bid:{" "}
-              <span className="text-green-500">${props.price.toLocaleString()}</span>
+              <span className="text-green-500">
+                ${props.price.toLocaleString()}
+              </span>
             </li>
             <li>Condition: {props.condition}</li>
             <li>{props.miles.toLocaleString()} miles</li>
             <li>
               <span className="text-amber-500">
                 Highest offer:{" "}
-                <span className="text-green-500">${highestBid.toLocaleString()}</span>
+                <span className="text-green-500">
+                  ${highestBid ? highestBid.toLocaleString() : 0}
+                </span>
               </span>
             </li>
           </ol>
