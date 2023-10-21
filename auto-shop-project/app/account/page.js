@@ -8,7 +8,7 @@ export default function Test() {
   const [editing, setEditing] = useState(false);
   const { user, setUser, BACKEND_URL } = useContext(UserContext);
   const router = useRouter();
-
+  console.log(user)
   const handleClick = () => {
     fetch(`${BACKEND_URL}/logout`, {
       method: "DELETE",
@@ -24,10 +24,10 @@ export default function Test() {
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          email: formik.values.email,
-          phone_number: formik.values.phoneNumber,
+          first_name: firstName ? firstName : user.first_name,
+          last_name: lastName ? lastName : user.last_name,
+          email: formik.values.email ? formik.values.email : user.email,
+          phone_number: formik.values.phoneNumber ? formik.values.phoneNumber : user.phone_number
         }),
       });
 
@@ -141,7 +141,8 @@ export default function Test() {
                       <input
                         className="rounded-sm p-1 pl-3 text-black "
                         name="phoneNumber"
-                        type="number"
+                        type="tel"
+                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                         placeholder="e.g 123-456-7890"
                         onChange={formik.handleChange}
                         value={formik.values.phoneNumber}
@@ -162,7 +163,7 @@ export default function Test() {
           </form>
 
           <h4 className="text-5xl sm:text-7xl py-9 px-4">My Appointments</h4>
-          <div className="flex flex-wrap justify-evenly">
+          <div className="flex flex-wrap justify-evenly mb-5">
             {user.appointments ? (
               user.appointments.map((appt) => {
                 return (
