@@ -107,7 +107,7 @@ class GetCurrent(Resource):
         else:
             return make_response({"message": "User not found"}, 404)
     def patch(self):
-        user = User.query.get(current_user)
+        user = current_user
         data = request.get_json()
         for attr in data:
             setattr(user, attr, data[attr])
