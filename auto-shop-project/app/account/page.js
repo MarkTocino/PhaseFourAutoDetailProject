@@ -25,7 +25,7 @@ export default function Test() {
         },
         body: JSON.stringify({
           first_name: firstName ? firstName : user.first_name,
-          last_name: lastName ? lastName : user.last_name,
+          last_name: firstName ? lastName : user.last_name,
           email: formik.values.email ? formik.values.email : user.email,
           phone_number: formik.values.phoneNumber ? formik.values.phoneNumber : user.phone_number
         }),
