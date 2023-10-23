@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function Test() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [taken, setTaken] = useState(false);
   const { user, setUser, BACKEND_URL } = useContext(UserContext);
   const router = useRouter();
   console.log(user)
@@ -16,6 +17,8 @@ export default function Test() {
     }).then(setUser(null));
   };
   const onSubmit = async () => {
+    setTaken(false);
+
     try {
       const response = await fetch(`${BACKEND_URL}/users/current`, {
         method: "PATCH",
@@ -36,8 +39,8 @@ export default function Test() {
         setUser(data);
         setEditing(false);
         formik.resetForm()
-      } else {
-        console.error("Failed to edit");
+      } else if (response.status ==400){
+        setTaken(true);
       }
     } catch (error) {
       console.error("There was an error editing:", error);
@@ -126,6 +129,7 @@ export default function Test() {
                         value={formik.values.email}
                       />
                     ) : null}
+                    {taken? <h1 className='text-red-600'>Email is already taken</h1> : null}
                   </td>
                 </tr>
                 <tr id="row-2" className="">

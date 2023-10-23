@@ -7,11 +7,15 @@ import { UserContext } from "../../Context/UserProvider";
 export default function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [noSuchUser, setNoSuchUser] = useState(false);
+  const [wrongPass, setWrongPass] = useState(false);
   const { user, setUser, BACKEND_URL } = useContext(UserContext);
   const router = useRouter();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("submi");
+    setNoSuchUser(false);
+    setWrongPass(false);
     if (email.length === 0) {
       return "Email has been left blank";
     } else if (password.length === 0) {
@@ -29,8 +33,14 @@ export default function login() {
         }),
       });
       const data = await response.json();
-      // if (data.ok) return setUser(data);
-      window.location.href = "/account";
+      if (response.ok) {
+        // console.log(data)
+        window.location.href = "/account";
+      } else if (response.status == 404) {
+        setNoSuchUser(true);
+      } else if (response.status == 400) {
+        setWrongPass(true);
+      }
     }
   };
   return (
@@ -48,14 +58,25 @@ export default function login() {
               src="/images/logoCar.png"
               style={{ marginTop: "15px", height: "70px", width: "220px" }}
               alt="Logo"
-            />            <div
+            />{" "}
+            <div
               className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
+              style={
+                noSuchUser
+                  ? {
+                      marginTop: "20px",
+                      borderTopLeftRadius: "7px",
+                      borderTopRightRadius: "7px",
+                      borderBottom: "",
+                      borderColor: "red",
+                    }
+                  : {
+                      marginTop: "20px",
+                      borderTopLeftRadius: "7px",
+                      borderTopRightRadius: "7px",
+                      borderBottom: "none",
+                    }
+              }
             >
               <img
                 style={{
@@ -77,10 +98,18 @@ export default function login() {
             </div>
             <div
               className="login-wrap"
-              style={{
-                borderBottomLeftRadius: "7px",
-                borderBottomRightRadius: "7px",
-              }}
+              style={
+                wrongPass
+                  ? {
+                      borderBottomLeftRadius: "7px",
+                      borderBottomRightRadius: "7px",
+                      borderColor: "red",
+                    }
+                  : {
+                      borderBottomLeftRadius: "7px",
+                      borderBottomRightRadius: "7px",
+                    }
+              }
             >
               <img
                 style={{
@@ -101,6 +130,12 @@ export default function login() {
                 style={{ paddingLeft: "14px" }}
               />
             </div>
+            {noSuchUser ? (
+              <h1 className="text-red-700">Incorrect email</h1>
+            ) : null}
+            {wrongPass ? (
+              <h1 className="text-red-700">Incorrect password</h1>
+            ) : null}
             <button href="/login" id="appt-button" type="submit">
               LOG IN
             </button>

@@ -11,5 +11,6 @@ pip install flask_migrate
 pip install flask_sqlalchemy
 pip install flask-session
 pip install cors
+pip install sendgrid
 pip install flask_cors
 npm install formik --save

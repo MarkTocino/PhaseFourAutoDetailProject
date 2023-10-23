@@ -103,6 +103,7 @@ body {
   border-radius: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-left: 5px;
 }
 .market-input {
   background-color: rgb(76, 76, 76);
@@ -182,7 +183,8 @@ body {
   background-color: rgb(230, 230, 230);
   font-size: 14px;
   height: 100px;
-  padding-left: 5px;
+  padding-left: 10px;
+  padding-top: 5px;
 }
 #appt-button {
   background-color: rgb(242, 57, 57);
@@ -393,6 +395,9 @@ h2 {
 }
 
 @media (max-width: 1024px) {
+  #message-box {
+    width: 70%;
+  }
   .submit-container {
     display: flex;
     flex-direction: column;

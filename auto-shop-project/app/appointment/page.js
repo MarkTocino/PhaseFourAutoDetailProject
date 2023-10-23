@@ -38,7 +38,7 @@ export default function Appointment() {
           notes: formik.values.notes,
         }),
       });
-  
+
       if (response.ok) {
         await response.json();
         alert("Appointment Made!");
@@ -49,7 +49,7 @@ export default function Appointment() {
       console.error("There was an error making the appointment:", error);
     }
   };
-  
+
   let takenTimes = [];
 
   const formik = useFormik({
@@ -64,7 +64,7 @@ export default function Appointment() {
       engine: "",
       plateNumber: "",
       date: today,
-      time: "07:00",
+      time: "07:00 AM",
       service: "",
       notes: "",
     },
@@ -76,6 +76,17 @@ export default function Appointment() {
       .filter((appt) => appt.date === formik.values.date)
       .forEach((appt) => takenTimes.push(appt.time));
   // console.log(takenTimes);
+  const times = [
+    "08:00 AM",
+    "09:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "01:00 PM",
+    "02:00 PM",
+    "03:00 PM",
+    "04:00 PM",
+  ];
 
   return (
     <div
@@ -97,6 +108,7 @@ export default function Appointment() {
           <div className="submit-box">
             First Name
             <input
+              required
               className="input-box"
               name="firstName"
               type="text"
@@ -119,6 +131,7 @@ export default function Appointment() {
           <div className="submit-box">
             Email
             <input
+              required
               className="input-box"
               name="email"
               type="text"
@@ -130,6 +143,7 @@ export default function Appointment() {
           <div className="submit-box">
             Phone Number
             <input
+              required
               className="input-box"
               name="phoneNumber"
               type="text"
@@ -186,8 +200,9 @@ export default function Appointment() {
             />
           </div>
           <div className="submit-box">
-            Plate Number
+            License Plate/VIN
             <input
+              required
               name="plateNumber"
               className="input-box"
               type="text"
@@ -199,6 +214,7 @@ export default function Appointment() {
           <div className="submit-box">
             Date
             <input
+              required
               name="date"
               className="input-box"
               onChange={formik.handleChange}
@@ -211,110 +227,29 @@ export default function Appointment() {
           <div className="submit-box">
             <label htmlFor="time">Select a time:</label>
             <select
+              required
               id="time"
               name="time"
               onChange={formik.handleChange}
               value={formik.values.time}
             >
-              {takenTimes.includes("08:00") ? (
-                <option
-                  value="08:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  08:00 AM
-                </option>
-              ) : (
-                <option value="08:00">08:00 AM</option>
-              )}
-              {takenTimes.includes("09:00") ? (
-                <option
-                  value="09:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  09:00 PM
-                </option>
-              ) : (
-                <option value="09:00">09:00 AM</option>
-              )}
-              {takenTimes.includes("10:00") ? (
-                <option
-                  value="10:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  10:00 PM
-                </option>
-              ) : (
-                <option value="10:00">10:00 AM</option>
-              )}
-              {takenTimes.includes("11:00") ? (
-                <option
-                  value="11:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  11:00 PM
-                </option>
-              ) : (
-                <option value="11:00">11:00 AM</option>
-              )}
-              {takenTimes.includes("12:00") ? (
-                <option
-                  value="12:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  12:00 PM
-                </option>
-              ) : (
-                <option value="12:00">12:00 PM</option>
-              )}
-              {takenTimes.includes("13:00") ? (
-                <option
-                  value="13:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  01:00 PM
-                </option>
-              ) : (
-                <option value="13:00">01:00 PM</option>
-              )}
-              {takenTimes.includes("14:00") ? (
-                <option
-                  value="14:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  02:00 PM
-                </option>
-              ) : (
-                <option value="14:00">02:00 PM</option>
-              )}
-              {takenTimes.includes("15:00") ? (
-                <option
-                  value="15:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  03:00 PM
-                </option>
-              ) : (
-                <option value="15:00">03:00 PM</option>
-              )}
-              {takenTimes.includes("16:00") ? (
-                <option
-                  value="16:00"
-                  disabled
-                  style={{ textDecoration: "line-through" }}
-                >
-                  04:00 PM
-                </option>
-              ) : (
-                <option value="16:00">04:00 PM</option>
-              )}
+              {times.map((time) => {
+                return (
+                  <option
+                    key={time}
+                    onChange={formik.handleChange}
+                    value={time}
+                    disabled={takenTimes.includes(time)}
+                    style={
+                      takenTimes.includes(time)
+                        ? { textDecoration: "line-through", color: "red" }
+                        : {}
+                    }
+                  >
+                    {time}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -480,15 +415,9 @@ export default function Appointment() {
             />
           </div>
         </div>
-        {user ? (
           <button id="appt-button" type="submit">
             MAKE APPOINTMENT
           </button>
-        ) : (
-          <button id="appt-button" type="submit">
-            MAKE APPOINTMENT & SIGNUP
-          </button>
-        )}
       </form>
     </div>
   );

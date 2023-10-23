@@ -7,9 +7,13 @@ import * as yup from "yup";
 
 export const signup = () => {
   const { user, setUser, BACKEND_URL } = useContext(UserContext);
+  const [taken, setTaken] = useState(false)
+  const [userFail, setUserFail] = useState(false)
   const router = useRouter();
   const onSubmit = async (e) => {
     console.log("register");
+    setTaken(false);
+    setUserFail(false);
     if (formik.values.email.length === 0) {
       return "Email has been left blank";
     } else if (formik.values.password.length === 0) {
@@ -27,9 +31,14 @@ export const signup = () => {
         }),
       });
       const data = await response.json();
-      console.log(data)
-      if (data.ok) setUser(data);
-      window.location.href = "/account";
+      if (response.ok) {
+        // console.log(data)
+        window.location.href = "/account";
+      } else if (response.status == 400) {
+        setTaken(true);
+      } else if (response.status == 404) {
+        setUserFail(true);
+      }
     }
   };
   const basicSchema = yup.object().shape({
@@ -70,7 +79,7 @@ export const signup = () => {
     validationSchema: basicSchema,
     onSubmit,
   });
-  console.log(formik.values)
+  console.log(formik.values); 
 
   return (
     <div>
@@ -86,46 +95,27 @@ export const signup = () => {
             <h2>Create an Account</h2>
             <img
               src="/images/logoCar.png"
-              className='my-3 h-[70px] w-[220px]'
+              className="my-3 h-[70px] w-[220px]"
               alt="Logo"
             />
-            {/* <div
-              className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
-            >
-              <img
-                style={{
-                  height: "18px",
-                  width: "25px",
-                  filter: "invert(1)",
-                  marginTop: "13px",
-                  marginLeft: "12px",
-                }}
-                src="/images/email.png"
-              />
-              <input
-                className="login-input"
-                id="firstName"
-                type="text"
-                placeholder="First Name"
-                value={formik.values.firstName}
-                onChange={formik.handleChange}
-              />
-            </div>
-            {<p>{formik.errors.firstName}</p>}
             <div
               className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
+              style={
+                formik.touched.email && formik.errors.email
+                  ? {
+                      marginTop: "20px",
+                      borderTopLeftRadius: "7px",
+                      borderTopRightRadius: "7px",
+                      borderBottom: "",
+                      borderColor: "red",
+                    }
+                  : {
+                      marginTop: "20px",
+                      borderTopLeftRadius: "7px",
+                      borderTopRightRadius: "7px",
+                      borderBottom: "none",
+                    }
+              }
             >
               <img
                 style={{
@@ -138,156 +128,98 @@ export const signup = () => {
                 src="/images/email.png"
               />
               <input
-                className="login-input"
-                id="lastName"
-                type="text"
-                placeholder="Last Name"
-                value={formik.values.lastName}
-                onChange={formik.handleChange}
-              />
-            </div>
-            {<p>{formik.errors.lastName}</p>}
-            <div
-              className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
-            >
-              <img
-                style={{
-                  height: "18px",
-                  width: "25px",
-                  filter: "invert(1)",
-                  marginTop: "13px",
-                  marginLeft: "12px",
-                }}
-                src="/images/email.png"
-              />
-              <input
-                className="login-input"
-                id="email"
+                name="email"
+                label={
+                  formik.touched.email && formik.errors.email
+                    ? "Email (johndoe@domain.xyz)"
+                    : "Email"
+                }
+                placeholder="Enter your email"
                 type="email"
-                placeholder="Enter Your Email"
                 value={formik.values.email}
+                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                className="login-input"
               />
             </div>
-            {<p>{formik.errors.email}</p>}
             <div
               className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
+              style={
+                formik.touched.password && formik.errors.password
+                  ? {
+                      borderColor: "red",
+                    }
+                  : {}
+              }
             >
               <img
                 style={{
-                  height: "18px",
-                  width: "25px",
+                  height: "20px",
+                  width: "20px",
                   filter: "invert(1)",
-                  marginTop: "13px",
-                  marginLeft: "12px",
+                  marginTop: "10px",
+                  marginLeft: "15px",
                 }}
-                src="/images/email.png"
+                src="/images/password.png"
               />
               <input
-                className="login-input"
-                id="password"
+                name="password"
+                label={
+                  formik.touched.password && formik.errors.password
+                    ? "Password (at least 6 characters)"
+                    : "Password"
+                }
+                placeholder="Enter your password"
                 type="password"
-                placeholder="Enter Your Password"
                 value={formik.values.password}
+                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                className="login-input"
               />
             </div>
-            {<p>{formik.errors.password}</p>}
             <div
               className="login-wrap"
-              style={{
-                marginTop: "20px",
-                borderTopLeftRadius: "7px",
-                borderTopRightRadius: "7px",
-                borderBottom: "none",
-              }}
+              style={
+                formik.touched.confirm && formik.errors.confirm
+                ? {
+                      borderBottomLeftRadius: "7px",
+                      borderBottomRightRadius: "7px",
+                      borderColor: "red",
+                    }
+                  : {
+                      borderBottomLeftRadius: "7px",
+                      borderBottomRightRadius: "7px",
+                    }
+              }
             >
               <img
                 style={{
-                  height: "18px",
-                  width: "25px",
+                  height: "20px",
+                  width: "20px",
                   filter: "invert(1)",
-                  marginTop: "13px",
-                  marginLeft: "12px",
+                  marginTop: "10px",
+                  marginLeft: "15px",
                 }}
-                src="/images/email.png"
+                src="/images/password.png"
               />
               <input
-                className="login-input"
-                id="phoneNumber"
-                type="PhoneNumber"
-                placeholder="Enter Your Phone Number"
-                value={formik.values.phoneNumber}
+                name="confirm"
+                label={
+                  formik.touched.confirm && formik.errors.confirm
+                    ? "Passwords must match"
+                    : "Confirm password"
+                }
+                placeholder="Confirm your password"
+                type="password"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.confirm}
+                className="login-input"
               />
             </div>
-            <p>{formik.errors.phoneNumber}</p> */}
-            <input
-              name="email"
-              label={
-                formik.touched.email && formik.errors.email
-                  ? "Email (johndoe@domain.xyz)"
-                  : "Email"
-              }
-              placeholder="Enter your email"
-              type="email"
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              className={
-                formik.touched.email && formik.errors.email
-                  ? "login-input border-2 border-rose-600"
-                  : "login-input"
-              }
-            />
-            <input
-              name="password"
-              label={
-                formik.touched.password && formik.errors.password
-                  ? "Password (at least 6 characters)"
-                  : "Password"
-              }
-              placeholder="Enter your password"
-              type="password"
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              className={
-                formik.touched.password && formik.errors.password
-                  ? "login-input border-2 border-rose-600"
-                  : "login-input"
-              }
-            />
-            <input
-              name="confirm"
-              label={
-                formik.touched.confirm && formik.errors.confirm
-                  ? "Passwords must match"
-                  : "Confirm password"
-              }
-              placeholder="Confirm your password"
-              type="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.confirm}
-              className={
-                formik.touched.confirm && formik.errors.confirm
-                  ? "login-input border-2 border-rose-600"
-                  : "login-input"
-              }
-            />
+            {taken ? (
+              <h1 className="text-red-700">Email is already taken</h1>
+            ) : null}
             <button id="appt-button" type="submit">
               Sign Up
             </button>

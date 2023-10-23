@@ -4,8 +4,14 @@ from flask_migrate import Migrate
 from flask import Flask, make_response, jsonify, request, session
 from flask_cors import CORS as FlaskCors
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from sqlalchemy.exc import IntegrityError
+
 import os
 import bcrypt
+
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get(
@@ -64,7 +70,7 @@ class Register(Resource):
         hashed=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            return make_response("Email is already in use"), 400
+            return make_response({"error":"Email is already in use"}, 400)
         try:
             user = User(email=email, password=hashed)
             db.session.add(user)
@@ -85,9 +91,9 @@ class Login(Resource):
         password = data['password']
         if bcrypt.checkpw(password.encode('utf-8'), user.password): 
             login_user(user, remember=True)
-            return "Logged in", 200
+            return make_response(user.to_dict(), 200)
         else:
-            return make_response("Wrong Password", 400)
+            return make_response({"error":"Wrong Password"}, 400)
 api.add_resource(Login, '/login')
 
 class Appointments(Resource):
@@ -107,13 +113,17 @@ class GetCurrent(Resource):
         else:
             return make_response({"message": "User not found"}, 404)
     def patch(self):
-        user = current_user
-        data = request.get_json()
-        for attr in data:
-            setattr(user, attr, data[attr])
-        db.session.add(user)
-        db.session.commit()
-        return make_response(user.to_dict(), 200)
+        try:
+            user = current_user
+            data = request.get_json()
+            for attr in data:
+                setattr(user, attr, data[attr])
+            db.session.add(user)
+            db.session.commit()
+            return make_response(user.to_dict(), 200)
+        except IntegrityError:
+            db.session.rollback()
+            return make_response({"error": "Unique constraint violation"}, 400)
 api.add_resource(GetCurrent, '/users/current')
 
 # LOGOUT OPTIONAL
@@ -157,6 +167,21 @@ class MakeAppointment(Resource):
         db.session.add(appointment)
         db.session.commit()
 
+        message = Mail(
+            from_email='chinesebob124@gmail.com',
+            to_emails=data['email'],
+            subject='Appointment Confirmation',
+            plain_text_content='Thank you for making an appointment with us!',
+            html_content='<strong>Thank you for making an appointment with us!</strong>')
+        try:
+            sg = SendGridAPIClient(SENDGRID_API_KEY)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e)
+            
         return make_response(appointment.to_dict(), 200)
 
 api.add_resource(MakeAppointment, '/MakeAppointment')
