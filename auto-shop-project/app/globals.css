@@ -197,13 +197,6 @@ body {
 #appt-button:hover {
   background-color: rgb(242, 91, 91);
 }
-.service-li {
-  margin-left: 7px;
-}
-.service-li:hover {
-  margin-left: 7px;
-  color: rgb(125, 77, 77);
-}
 .subtext {
   font-size: 24px;
   text-align: center;
@@ -388,7 +381,7 @@ h2 {
   border-color: red;
   width: 30%;
   min-width: 300px;
-  margin: 10px;
+  margin: 15px;
   font-size: 18px;
   box-shadow: 0 0 7px 7px rgba(255, 255, 255, 0.2);
 
@@ -455,5 +448,8 @@ h2 {
     max-height: 30%;
     padding-top: 15px;
     padding-bottom: 15px;
+  }
+  .form-box {
+    width: 90vw;
   }
 }

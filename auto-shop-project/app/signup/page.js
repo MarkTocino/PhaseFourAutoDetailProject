@@ -106,14 +106,12 @@ export const signup = () => {
                       marginTop: "20px",
                       borderTopLeftRadius: "7px",
                       borderTopRightRadius: "7px",
-                      borderBottom: "",
                       borderColor: "red",
                     }
                   : {
                       marginTop: "20px",
                       borderTopLeftRadius: "7px",
                       borderTopRightRadius: "7px",
-                      borderBottom: "none",
                     }
               }
             >

@@ -89,6 +89,7 @@ export default function login() {
                 src="/images/email.png"
               />
               <input
+                required
                 className="login-input"
                 type="email"
                 value={email}
@@ -122,6 +123,7 @@ export default function login() {
                 src="/images/password.png"
               />
               <input
+                required
                 className="login-input"
                 type="password"
                 value={password}
@@ -140,10 +142,10 @@ export default function login() {
               LOG IN
             </button>
             <div>
+              New user?{" "}
               <a className="links" href="/signup">
-                Sign up
-              </a>{" "}
-              if no account
+                Sign up now
+              </a>
             </div>
           </form>
         </div>

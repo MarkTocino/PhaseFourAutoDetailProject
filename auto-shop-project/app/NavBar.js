@@ -4,9 +4,6 @@ import { UserContext } from '../Context/UserProvider'
 const NavBar = () => {
 const { user, setUser } = useContext(UserContext)
 
-// if (user === null){
-//   setUser(false)
-// }
   return (
     <header className="header">
         <div className="logo">AUTO DETAIL
@@ -18,7 +15,7 @@ const { user, setUser } = useContext(UserContext)
       <a href="/market">MARKET</a>
       <a href="/services">SERVICES</a>
       <a href="/appointment">APPOINTMENT</a>
-      {user ? <a href="/account">ACCOUNT</a> : <a href="/login">LOGIN</a>}
+      {user ? <a href="/account">ACCOUNT</a> : <a href="/login">ACCOUNT</a>}
     </nav>
   </header>
   )

@@ -12,6 +12,18 @@ export default function Appointment() {
   timeAhead.setMonth(today.getMonth() + 2);
   today = today.toISOString().slice(0, 10);
   timeAhead = timeAhead.toISOString().slice(0, 10);
+  const services = [
+    "Oil Change",
+    "Brake Pad Replacement",
+    "Tire & Rim Cleaning",
+    "Body Polishing",
+    "Exterior Hand Wash",
+    "Interior Surface Polishing",
+    "Glass Cleaning",
+    "Carpet Cleaning",
+    "Waste Removal",
+    "Engine Bay Cleaning",
+  ];
 
   const onSubmit = async () => {
     try {
@@ -49,7 +61,16 @@ export default function Appointment() {
       console.error("There was an error making the appointment:", error);
     }
   };
-
+  const handleService = (e) => {
+    e.preventDefault();
+    if (formik.values.time == "" || formik.values.time == "Select a time") {
+      alert("no time");
+    } else if (formik.values.service == "") {
+      alert("no service");
+    } else {
+      formik.handleSubmit();
+    }
+  };
   let takenTimes = [];
 
   const formik = useFormik({
@@ -64,7 +85,7 @@ export default function Appointment() {
       engine: "",
       plateNumber: "",
       date: today,
-      time: "07:00 AM",
+      time: "",
       service: "",
       notes: "",
     },
@@ -77,6 +98,7 @@ export default function Appointment() {
       .forEach((appt) => takenTimes.push(appt.time));
   // console.log(takenTimes);
   const times = [
+    "Select a time",
     "08:00 AM",
     "09:00 AM",
     "10:00 AM",
@@ -102,7 +124,7 @@ export default function Appointment() {
       }}
     >
       <h1 className="route-head">SCHEDULE AN APPOINTMENT</h1>
-      <form className="form-box" onSubmit={formik.handleSubmit}>
+      <form className="form-box" onSubmit={handleService}>
         <h1 className="contact-subheader">CONTACT INFORMATION</h1>
         <div className="submit-container">
           <div className="submit-box">
@@ -158,6 +180,7 @@ export default function Appointment() {
           <div className="submit-box">
             Make
             <input
+              required
               className="input-box"
               name="make"
               value={formik.values.make}
@@ -169,6 +192,7 @@ export default function Appointment() {
           <div className="submit-box">
             Model
             <input
+              required
               className="input-box"
               name="model"
               value={formik.values.model}
@@ -180,6 +204,7 @@ export default function Appointment() {
           <div className="submit-box">
             Year
             <input
+              required
               name="year"
               className="input-box"
               type="text"
@@ -225,7 +250,7 @@ export default function Appointment() {
             />
           </div>
           <div className="submit-box">
-            <label htmlFor="time">Select a time:</label>
+            {/* <label htmlFor="time">Select a time:</label> */}
             <select
               required
               id="time"
@@ -255,150 +280,54 @@ export default function Appointment() {
         </div>
         <h1 className="contact-subheader">TYPE OF SERVICE</h1>
         <div className="submit-container">
-          <div className="submit-box" style={{ display: "flex" }}>
-            <ul style={{ fontSize: "22px", width: "60%" }}>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option1"
-                  name="service"
-                  value="Oil Change"
-                  checked={formik.values.service.includes("Oil Change")}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option1">
-                  Oil Change
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option2"
-                  name="service"
-                  value="Brake/Brake Pad Replacement"
-                  checked={formik.values.service.includes(
-                    "Brake/Brake Pad Replacement"
-                  )}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option2">
-                  Brake/Brake Pad Replacement
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option3"
-                  name="service"
-                  value="Tire & Rim Cleaning"
-                  checked={formik.values.service.includes(
-                    "Tire & Rim Cleaning"
-                  )}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option3">
-                  Tire & Rim Cleaning
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option4"
-                  name="service"
-                  value="Body Polishing"
-                  checked={formik.values.service.includes("Body Polishing")}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option4">
-                  Body Polishing
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option5"
-                  name="service"
-                  value="Exterior Hand Wash"
-                  checked={formik.values.service.includes("Exterior Hand Wash")}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option5">
-                  Exterior Hand Wash
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option6"
-                  name="service"
-                  value="Engine Bay Cleaning"
-                  checked={formik.values.service.includes(
-                    "Engine Bay Cleaning"
-                  )}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option6">
-                  Engine Bay Cleaning
-                </label>
-              </li>
+          <div className="flex py-3">
+            <ul className="text-xl px-1">
+              {services.slice(0, 5).map((service, index) => (
+                <li key={index}>
+                  <input
+                    type="checkbox"
+                    id={`option${index + 1}`}
+                    name="service"
+                    value={service}
+                    checked={formik.values.service.includes(service)}
+                    onChange={formik.handleChange}
+                  />
+                  <label
+                    className={
+                      formik.values.service.includes(service)
+                        ? "ml-1 hover:text-red-700 text-red-900 md:mb-2"
+                        : "ml-1 hover:text-red-700 md:mb-2"
+                    }
+                    htmlFor={`option${index + 1}`}
+                  >
+                    {service}
+                  </label>
+                </li>
+              ))}
             </ul>
-            <ul style={{ fontSize: "22px", width: "60%" }}>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option7"
-                  name="service"
-                  value="Interior Surface Polishing"
-                  checked={formik.values.service.includes(
-                    "Interior Surface Polishing"
-                  )}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option7">
-                  Interior Surface Polishing
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option8"
-                  name="service"
-                  value="Glass Cleaning"
-                  checked={formik.values.service.includes("Glass Cleaning")}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option8">
-                  Glass Cleaning
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option9"
-                  name="service"
-                  value="Carpet Cleaning"
-                  checked={formik.values.service.includes("Carpet Cleaning")}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option9">
-                  Carpet Cleaning
-                </label>
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  id="option10"
-                  name="service"
-                  value="Waste Removal & Vacuuming"
-                  checked={formik.values.service.includes(
-                    "Waste Removal & Vacuuming"
-                  )}
-                  onChange={formik.handleChange}
-                />
-                <label className="service-li" htmlFor="option10">
-                  Waste Removal & Vacuuming
-                </label>
-              </li>
+            <ul className="text-xl px-1">
+              {services.slice(5).map((service, index) => (
+                <li key={index + 5}>
+                  <input
+                    type="checkbox"
+                    id={`option${index + 6}`}
+                    name="service"
+                    value={service}
+                    checked={formik.values.service.includes(service)}
+                    onChange={formik.handleChange}
+                  />
+                  <label
+                    className={
+                      formik.values.service.includes(service)
+                        ? "ml-1 hover:text-red-700 text-red-800 md:mb-2"
+                        : "ml-1 hover:text-red-700 md:mb-2"
+                    }
+                    htmlFor={`option${index + 6}`}
+                  >
+                    {service}
+                  </label>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -415,9 +344,9 @@ export default function Appointment() {
             />
           </div>
         </div>
-          <button id="appt-button" type="submit">
-            MAKE APPOINTMENT
-          </button>
+        <button id="appt-button" type="submit">
+          MAKE APPOINTMENT
+        </button>
       </form>
     </div>
   );

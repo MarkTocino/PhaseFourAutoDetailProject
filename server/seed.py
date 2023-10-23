@@ -27,8 +27,8 @@ if __name__ == '__main__':
         db.session.commit()
 
         print("Seeding appointments...")
-        markacc = Appointment(date='10/10/2023', time="12:00 PM", type_of_service='Wheel Alignment', user_id=mark.id, car_id =accord.id)
-        samfor = Appointment(date='12/9/2023', time="3:00 PM", type_of_service='Oil Change', user_id=sam.id, car_id = forester.id)
+        markacc = Appointment(date='2023-10-12', time="12:00 PM", type_of_service='Wheel Alignment', user_id=mark.id, car_id =accord.id)
+        samfor = Appointment(date='2023-11-15', time="3:00 PM", type_of_service='Oil Change', user_id=sam.id, car_id = forester.id)
         appts =[markacc, samfor]
         db.session.add_all(appts)
         db.session.commit()
