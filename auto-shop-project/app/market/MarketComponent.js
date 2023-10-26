@@ -79,7 +79,10 @@ export default function MarketComponent(props) {
         </div>
       </div>
       <div className="">
-        <h3 className="text-xl sm:text-2xl border-2 m-auto p-1 px-10 inline-block">
+        <h3
+          className="text-2xl sm:text-3xl uppercase rounded-sm border-b-2 m-auto p-1 px-10 inline-block"
+          style={{ boxShadow: '0px -5px 5px rgba(0, 0, 0, 1.0)' }}
+          >
           {props.make} {props.model} {props.year}
         </h3>
         <form className="text-xl p-3" onSubmit={onSubmit}>

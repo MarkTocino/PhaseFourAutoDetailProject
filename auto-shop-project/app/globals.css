@@ -127,7 +127,7 @@ body {
   min-width: 215px;
   display: inline-flex;
   background-color: rgb(76, 76, 76);
-  border-radius:5px;
+  border-radius: 5px;
   border: solid;
   border-color: rgb(169, 169, 169);
 }
@@ -237,6 +237,49 @@ body {
   position: fixed;
   z-index: 1000;
 }
+@keyframes slideIn {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes slideOut {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+#menu {
+  position: fixed;
+  z-index: 500;
+  transition: left 0.25s ease-in; /* Transitioning the left property */
+  height: calc(100vh - 70px);
+  width: 40vw;
+  background-color:#616161;
+  margin-top: 70px;
+  left: 100vw;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#menu a{
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+#menu.slide-in {
+  left: 60vw; 
+}
+
+#menu.slide-out {
+  left: 100vw; 
+}
 
 .logo {
   margin-left: 15px;
@@ -345,8 +388,8 @@ body {
   width: 70%;
   border-radius: 4px;
 }
-.view-eye:hover{
-  cursor:pointer;
+.view-eye:hover {
+  cursor: pointer;
 }
 .links {
   text-decoration: underline;
@@ -384,9 +427,10 @@ h2 {
   margin: 15px;
   font-size: 18px;
   box-shadow: 0 0 7px 7px rgba(255, 255, 255, 0.2);
-
 }
-
+.navigation img {
+  display: none;
+}
 @media (max-width: 1024px) {
   #message-box {
     width: 70%;
@@ -422,6 +466,9 @@ h2 {
   }
   .navigation a {
     display: none;
+  }
+  .navigation img {
+    display: inline;
   }
   .login-box {
     background-color: gray;

@@ -280,7 +280,7 @@ export default function Appointment() {
         </div>
         <h1 className="contact-subheader">TYPE OF SERVICE</h1>
         <div className="submit-container">
-          <div className="flex py-3">
+          <div className="flex py-3 justify-center">
             <ul className="text-xl px-1">
               {services.slice(0, 5).map((service, index) => (
                 <li key={index}>

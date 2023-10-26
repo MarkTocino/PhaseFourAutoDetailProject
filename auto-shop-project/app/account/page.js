@@ -65,14 +65,14 @@ export default function Test() {
       {user ? (
         <div>
           <h4 className="text-5xl sm:text-7xl py-9 px-4">My Profile</h4>
-          <div className="row">
-            <div className="col-lg-4">
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-full lg:w-1/3">
               <img
                 className="w-[140px] m-auto mb-3"
                 src="/svgs/steering.svg"
                 alt="steering wheel"
               />
-              
+
               <form onSubmit={formik.handleSubmit}>
                 <table className="m-auto w-4/5 sm:w-2/5">
                   <tbody className="px-3 text-xl">
@@ -180,7 +180,7 @@ export default function Test() {
                 </a>
               </div>
             </div>
-            <div className="col-lg-8">
+            <div className="w-full lg:w-2/3">
               <h4 className="text-3xl py-9 px-4 sm:text-5xl sm:pt-0">
                 Appointments
               </h4>
