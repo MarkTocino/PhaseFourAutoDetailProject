@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "../../Context/UserProvider";
 import * as yup from "yup";
 
-export const signup = () => {
+export const Signup = () => {
   const { user, setUser, BACKEND_URL } = useContext(UserContext);
   const [taken, setTaken] = useState(false)
   const [userFail, setUserFail] = useState(false)

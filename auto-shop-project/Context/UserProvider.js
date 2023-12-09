@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const [offers, setOffers] = useState(null);
   const [marketCars, setMarketCars] = useState(null);
   const [loading, setLoading] = useState(true);
-  const BACKEND_URL = "http://127.0.0.1:5555";
+  const BACKEND_URL = "https://enchanting-ox-shoe.cyclic.app";
   useEffect(() => {
     const fetchUser = fetch(`${BACKEND_URL}/users/current`, {
       credentials: "include",

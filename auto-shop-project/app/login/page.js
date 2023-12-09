@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "../../Context/UserProvider";
 
-export default function login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [noSuchUser, setNoSuchUser] = useState(false);
