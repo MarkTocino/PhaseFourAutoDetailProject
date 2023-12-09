@@ -233,4 +233,4 @@ export const Signup = () => {
     </div>
   );
 };
-export default signup;
+export default Signup;
