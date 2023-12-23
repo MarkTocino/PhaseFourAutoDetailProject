@@ -1,18 +1,19 @@
 README
 To set up and clone this repo:
 git clone
-run bash setup.sh to install all required dependecies
-run python server/app.py to run flask api
-run npm install inside of auto-shop-project directory
+run bash setup.sh to install all required dependencies
+run python server/app.py to run flask API
+run npm install inside of an auto-shop-project directory
 run npm run dev inside of auto-shop-project directory to run react frontend
 
+Welcome!
+This Application allows users to:
+- Setup Appointments
+- Buy Cars
+- Sign Up or Login If Account has already been created
 
-// so i looked into routing through pages or app,
-seems like most people say app routing is better, but im not sure
-i use for now, but its kinda weird
+Technologies Used:
+Front-end: Next.js
+Back-end: Flask, Python SQL.
 
-inside of auto-shop-project directory, theres the app directory:
-npm run dev inside auto-shop to launch front end
-the default route '/' belongs to the page.js at the highest level
-any other routes are created by naming the directories and nesting them inside 
-for example, the '/dashboard' route would be made by creating the dashboard directory within the app directory, which is on the same level as the top level page.js. inside of the dashboard directory, it has its own page.js, which is what actually shows on the website when you navigate to localhost3000/dashboard
+Credits: Sam Ou & Mark Tocino
