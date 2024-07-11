@@ -7,7 +7,6 @@ This project is a comprehensive web application that supports appointment schedu
 - User registration and login
 - Appointment scheduling
 - Anonymous bidding and purchasing
-- Responsive design for various devices
 
 ## Technologies Used:
 - Front-end: Next.js, React
