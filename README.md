@@ -17,4 +17,4 @@ This video will show you the different functionalities with options to put in an
 - Front-end: Next.js, React
 - Back-end: Python, Flask, SQLite.
 
-Credits: Sam Ou & Mark Tocino
+Developed by: Samuel Ou & Mark Tocino
