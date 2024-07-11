@@ -1,13 +1,14 @@
 ## Overview
 This project is a comprehensive web application that supports appointment scheduling, car purchases, and user authentication. It aims to enhance the efficiency and user experience of auto detailing businesses.
-Welcome!
-This Application allows users to:
-- Setup Appointments
-- Buy Cars
-- Sign Up or Login If Account has already been created
 
-Technologies Used:
-Front-end: Next.js
-Back-end: Python, Flask, SQLite.
+## Features
+- User registration and login
+- Appointment scheduling
+- Anonymous bidding and purchasing
+- Responsive design for various devices
+
+## Technologies Used:
+- Front-end: Next.js, React
+- Back-end: Python, Flask, SQLite.
 
 Credits: Sam Ou & Mark Tocino
