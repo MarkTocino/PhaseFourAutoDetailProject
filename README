@@ -1,11 +1,5 @@
-README
-To set up and clone this repo:
-git clone
-run bash setup.sh to install all required dependencies
-run python server/app.py to run flask API
-run npm install inside of an auto-shop-project directory
-run npm run dev inside of auto-shop-project directory to run react frontend
-
+## Overview
+This project is a comprehensive web application that supports appointment scheduling, car purchases, and user authentication. It aims to enhance the efficiency and user experience of auto detailing businesses.
 Welcome!
 This Application allows users to:
 - Setup Appointments
@@ -14,6 +8,6 @@ This Application allows users to:
 
 Technologies Used:
 Front-end: Next.js
-Back-end: Flask, Python SQL.
+Back-end: Python, Flask, SQLite.
 
 Credits: Sam Ou & Mark Tocino
